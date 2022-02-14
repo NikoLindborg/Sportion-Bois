@@ -3,10 +3,8 @@ package fi.sportionbois.sportion
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -40,9 +38,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
-fun Home(name: String) {
-    Text(text = name)
+fun Home() {
+    LazyColumn(modifier = Modifier .fillMaxHeight() .fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.SpaceEvenly){
+        items(2){
+            HomeDataCard(data = Message("Ville Valo", "Laulanta", "REPEMAX",
+                "1.4s", "50kg", "3"))
+            HomeDataCard(data = Message("Ville Valo2", "Laulanta", "REPEMAX",
+                "1.4s", "50kg", "3"))
+        }
+    }
+
 }
 
 @Composable
@@ -81,7 +90,7 @@ fun MainScreen() {
 @Composable
 fun DefaultPreview() {
     SportionTheme {
-        Home("Android")
+        Home()
     }
 }
 
@@ -114,7 +123,7 @@ fun TopBar() {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            Home(name = "Home")
+            Home()
         }
         composable(BottomNavItem.StartTracking.screen_route) {
             StartTracking(name = "Start tracking")

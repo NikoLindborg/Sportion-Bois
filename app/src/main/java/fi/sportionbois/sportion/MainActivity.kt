@@ -3,7 +3,6 @@ package fi.sportionbois.sportion
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -44,17 +42,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Home(name: String) {
-    Text(text = name, color = Color.White)
+    Text(text = name)
 }
 
 @Composable
 fun StartTracking(name: String) {
-    Text(text = name, color = Color.White)
+    ButtonCHViolet(text = "START") {
+        
+    }
 }
 
 @Composable
 fun Settings(name: String) {
-    Text(text = name, color = Color.White)
+    Text(text = name)
 }
 
 @Composable
@@ -67,8 +67,7 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .background(Color(0xFF263D42)),
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -89,8 +88,8 @@ fun DefaultPreview() {
 @Composable
 fun TopBar() {
     TopAppBar(
-        backgroundColor = Color(0xFF263D42),
-        contentColor = Color(0xFFCCDBDC),
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onBackground,
         title = { Text(stringResource(id = R.string.app_name)) },
         navigationIcon = {
             IconButton(onClick = { /* doSomething() */ }) {
@@ -134,8 +133,7 @@ fun BottomNavigation(navController: NavController) {
         BottomNavItem.Settings,
     )
     BottomNavigation(
-        backgroundColor = Color(0xFF263D42),
-        contentColor = Color.White
+        backgroundColor = MaterialTheme.colors.background
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -148,8 +146,8 @@ fun BottomNavigation(navController: NavController) {
                         fontSize = 9.sp
                     )
                 },
-                selectedContentColor = Color(0xFFCCDBDC),
-                unselectedContentColor = Color(0xFFCCDBDC).copy(0.4f),
+                selectedContentColor = MaterialTheme.colors.onBackground,
+                unselectedContentColor = MaterialTheme.colors.onBackground.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {

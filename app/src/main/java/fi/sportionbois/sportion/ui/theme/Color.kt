@@ -2,7 +2,8 @@ package fi.sportionbois.sportion.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val LightGray = Color(0xFFCCDBDC)
+val MiddleBlue = Color(0xFF80CED7)
+val MediumTurquoise = Color(0xFF63C7B2)
+val ChineseViolet = Color(0xFF8E6C88)
+val SpaceCrayola = Color(0xFF263D42)

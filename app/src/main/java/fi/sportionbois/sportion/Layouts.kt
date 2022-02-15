@@ -40,7 +40,7 @@ fun ButtonCHViolet(
     onClick: () -> Unit
 ) {
     Button(
-        onClick = { },
+        onClick = onClick,
         modifier = modifier
             .height(90.dp)
             .width(325.dp),
@@ -68,6 +68,19 @@ fun ButtonCHViolet(
                 style = MaterialTheme.typography.h1
             )
         }
+    }
+}
+
+@Composable
+fun CenteredColumnMaxWidthAndHeight(children: @Composable () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        children()
     }
 }
 

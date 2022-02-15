@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion.navigation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,6 +9,7 @@ import com.github.mikephil.charting.data.Entry
 import fi.sportionbois.sportion.Home
 import fi.sportionbois.sportion.Settings
 import fi.sportionbois.sportion.StartTracking
+import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import java.util.ArrayList
 
@@ -32,7 +34,10 @@ fun NavigationGraph(navController: NavHostController) {
             lineEntry.add(Entry(4f, 0F))
             lineEntry.add(Entry(5f, 0F))
             lineEntry.add(Entry(6f, -4F))
-            PlotChart(lineEntry, "Description for chart")
+            Column() {
+                PlotChart(lineEntry, "Description for chart")
+                DetailComponent(firstValue = "0.23", secondValue = "mave")
+            }
         }
     }
 }

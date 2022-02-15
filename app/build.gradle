@@ -65,4 +65,7 @@ dependencies {
 
     // Navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+
+    // Graph
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

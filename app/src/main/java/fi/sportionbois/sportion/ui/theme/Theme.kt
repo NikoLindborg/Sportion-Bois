@@ -12,7 +12,8 @@ private val DarkColorPalette = darkColors(
     primaryVariant = MiddleBlue,
     secondary = MediumTurquoise,
     background = SpaceCrayola,
-    onBackground = LightGray
+    onBackground = LightGray,
+    onPrimary = CustomGreen
 )
 
 private val LightColorPalette = lightColors(
@@ -20,7 +21,8 @@ private val LightColorPalette = lightColors(
     primaryVariant = MiddleBlue,
     secondary = MediumTurquoise,
     background = Color.White,
-    onBackground = SpaceCrayola
+    onBackground = SpaceCrayola,
+    onPrimary = MiddleBlue
 
     /* Other default colors to override
     background = Color.White,

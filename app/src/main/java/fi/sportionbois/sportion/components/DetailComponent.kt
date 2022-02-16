@@ -1,6 +1,7 @@
 package fi.sportionbois.sportion.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,16 +19,21 @@ fun DetailComponent(firstValue: String, secondValue: String) {
     Surface(
         elevation = 1.dp,
         modifier = Modifier
+            .background(color = MaterialTheme.colors.background)
             .width(IntrinsicSize.Min)
             .border(
                 BorderStroke(1.dp, MaterialTheme.colors.onBackground),
                 shape = RoundedCornerShape(5.dp)
             )
+
     ) {
         Column(
             modifier = Modifier
+                .background(color = MaterialTheme.colors.background)
                 .padding(0.dp)
-                .padding(7.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+                .padding(7.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(text = firstValue)
             Text(text = secondValue)

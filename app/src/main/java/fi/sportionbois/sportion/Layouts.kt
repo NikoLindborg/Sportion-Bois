@@ -76,6 +76,7 @@ fun CenteredColumnMaxWidthAndHeight(children: @Composable () -> Unit) {
     }
 }
 
+//placeholder for data shown in homepage.
 data class Message(val name: String, val activity: String,
                    val body: String, val info1: String,
                     val info2: String, val info3: String)

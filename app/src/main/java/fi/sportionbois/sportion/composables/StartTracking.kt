@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +21,9 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.components.SportTypeButton
+import fi.sportionbois.sportion.components.SportTypeCardButton
 
+@ExperimentalMaterialApi
 @Composable
 fun StartTracking(navController: NavController) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -28,7 +31,7 @@ fun StartTracking(navController: NavController) {
         val listOfSports = listOf("Biking", "Squat", "Deadlift")
         LazyColumn() {
             items(listOfSports) {
-                SportTypeButton(text = it) { }
+                SportTypeCardButton(text = it)
                 Spacer(modifier = Modifier.padding(20.dp))
             }
         }

@@ -71,4 +71,11 @@ dependencies {
 
     // Google location
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    //LiveData and ViewModel
+    def lifecycle_version = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }

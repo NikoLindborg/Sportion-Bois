@@ -6,6 +6,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,10 +15,12 @@ import com.github.mikephil.charting.data.Entry
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.components.RPEBar
+import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
 
 @Composable
-fun LocationResult() {
+fun LocationResult(locationViewModel: LocationViewModel) {
+    val value by locationViewModel.travelledDistance.observeAsState()
     val lineEntry = ArrayList<Entry>()
     lineEntry.add(Entry(0f, 0F))
     lineEntry.add(Entry(1f, 0F))
@@ -36,7 +40,7 @@ fun LocationResult() {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RPEBar("8")
+            RPEBar("%.1f".format(value) + " m")
         }
         Text("Bike details", style = MaterialTheme.typography.body1)
         Row(
@@ -44,10 +48,7 @@ fun LocationResult() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            DetailComponent(firstValue = "0.23", secondValue = "Speed")
-            DetailComponent(firstValue = "63", secondValue = "Weight")
-            DetailComponent(firstValue = "28", secondValue = "Reps")
-            DetailComponent(firstValue = "21", secondValue = "Repes")
+            DetailComponent(firstValue = "%.1f".format(value), secondValue = "distance")
         }
         Column(
             modifier = Modifier.fillMaxWidth(),

@@ -20,9 +20,15 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.components.SportTypeButton
+import fi.sportionbois.sportion.location.LocationHandler
+import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
 @Composable
-fun StartTracking(navController: NavController) {
+fun StartTracking(
+    navController: NavController,
+    locationHandler: LocationHandler,
+    locationViewModel: LocationViewModel
+) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         //  Placeholder list for different sports
         val listOfSports = listOf("Biking", "Squat", "Deadlift")
@@ -33,6 +39,7 @@ fun StartTracking(navController: NavController) {
             }
         }
         ButtonCHViolet(text = "START", onClick = {
+            locationHandler.startLocationTracking()
             navController.navigate("TrackingActive")
         })
     }

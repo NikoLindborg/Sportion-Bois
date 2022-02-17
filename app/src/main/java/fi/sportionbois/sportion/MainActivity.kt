@@ -15,6 +15,7 @@ import fi.sportionbois.sportion.navigation.BottomNavigationBar
 import fi.sportionbois.sportion.navigation.NavigationGraph
 import fi.sportionbois.sportion.navigation.TopBar
 import fi.sportionbois.sportion.ui.theme.SportionTheme
+import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi

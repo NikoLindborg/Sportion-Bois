@@ -4,6 +4,7 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,7 @@ import fi.sportionbois.sportion.composables.*
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
+@ExperimentalMaterialApi
 @Composable
 fun NavigationGraph(
     navController: NavHostController,

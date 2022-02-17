@@ -1,5 +1,4 @@
 package fi.sportionbois.sportion.composables
-
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -13,14 +12,21 @@ import fi.sportionbois.sportion.CenteredColumnMaxWidthAndHeight
 import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 @Composable
 fun TrackingActive(
     navController: NavController,
     locationHandler: LocationHandler,
-    locationViewModel: LocationViewModel
+    locationViewModel: LocationViewModel,
+    accelerometerViewModel: AccelerometerViewModel = viewModel()
 ) {
     val value by locationViewModel.travelledDistance.observeAsState()
+    val acc = accelerometerViewModel.acceleration.observeAsState()
+    accelerometerViewModel.listen()
+    Log.d("acc", acc.value.toString())
+
     CenteredColumnMaxWidthAndHeight {
         RPEBar(rpeValue = "%.1f".format(value))
         Spacer(modifier = Modifier.padding(20.dp))
@@ -29,6 +35,7 @@ fun TrackingActive(
             onClick = {
                 locationHandler.stopLocationTracking()
                 navController.navigate("LocationActivityDetails")
+                accelerometerViewModel.stopListening()
             })
     }
 }

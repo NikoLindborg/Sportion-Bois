@@ -17,13 +17,15 @@ import fi.sportionbois.sportion.navigation.NavigationGraph
 import fi.sportionbois.sportion.navigation.TopBar
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
+import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 class MainActivity : ComponentActivity() {
 
     companion object {
         private lateinit var locationViewModel: LocationViewModel
     }
-
+    
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationViewModel = LocationViewModel(Application())
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel) {
     val navController = rememberNavController()

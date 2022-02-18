@@ -1,4 +1,5 @@
 package fi.sportionbois.sportion.composables
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ fun TrackingActive(
     val value by locationViewModel.travelledDistance.observeAsState()
     val acc = accelerometerViewModel.acceleration.observeAsState()
     accelerometerViewModel.listen()
-    Log.d("acc", acc.value.toString())
+    //Log.d("acc", acc.value.toString())
 
     CenteredColumnMaxWidthAndHeight {
         RPEBar(rpeValue = "%.1f".format(value))

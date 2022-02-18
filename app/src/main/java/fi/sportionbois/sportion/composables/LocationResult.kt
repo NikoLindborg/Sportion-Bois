@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion.composables
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,18 +18,15 @@ import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
+import kotlin.math.absoluteValue
 
 @Composable
 fun LocationResult(locationViewModel: LocationViewModel) {
     val value by locationViewModel.travelledDistance.observeAsState()
-    val lineEntry = ArrayList<Entry>()
-    lineEntry.add(Entry(0f, 0F))
-    lineEntry.add(Entry(1f, 0F))
-    lineEntry.add(Entry(2f, 1F))
-    lineEntry.add(Entry(3f, 0F))
-    lineEntry.add(Entry(4f, 0F))
-    lineEntry.add(Entry(5f, 0F))
-    lineEntry.add(Entry(6f, -4F))
+    val locationData by locationViewModel.locationData.observeAsState()
+    val lineEntrySpeed = ArrayList<Entry>()
+    val lineEntryAltitude = ArrayList<Entry>()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = Modifier
@@ -37,10 +35,10 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             .padding(vertical = 32.dp, horizontal = 32.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth().height(300.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            RPEBar("%.1f".format(value) + " m")
+            ShowMap(lat = 1.1, lon = 1.1, address = "")
         }
         Text("Bike details", style = MaterialTheme.typography.body1)
         Row(
@@ -55,9 +53,13 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            PlotChart(lineEntry, "Description for chart")
+            locationData?.forEachIndexed { index, element ->
+                lineEntrySpeed.add(Entry(index.toFloat(), element.speed.toFloat()))
+                lineEntryAltitude.add(Entry(index.toFloat(), element.altitude.toFloat()))
+            }
+            PlotChart(lineEntrySpeed, "Description for chart")
             Spacer(modifier = Modifier.padding(16.dp))
-            PlotChart(lineEntry, "Description for chart")
+            PlotChart(lineEntryAltitude, "Description for chart")
         }
     }
 }

@@ -27,7 +27,7 @@ import fi.sportionbois.sportion.R
 fun PlotChart(values: ArrayList<Entry>, description: String) {
     Card(
         shape = RoundedCornerShape(10.dp), modifier = Modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth()
             .height(420.dp)
     ) {
         Column(

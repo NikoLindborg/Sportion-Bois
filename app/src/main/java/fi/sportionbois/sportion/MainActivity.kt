@@ -8,9 +8,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.R
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import androidx.preference.PreferenceManager
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.navigation.BottomNavigationBar
 import fi.sportionbois.sportion.navigation.NavigationGraph
@@ -18,6 +22,8 @@ import fi.sportionbois.sportion.navigation.TopBar
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
+import org.osmdroid.config.Configuration
+import org.osmdroid.views.MapView
 
 class MainActivity : ComponentActivity() {
 
@@ -34,6 +40,7 @@ class MainActivity : ComponentActivity() {
             arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
             0
         )
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
         var locationHandler = LocationHandler(applicationContext, locationViewModel)
         locationHandler.initializeLocation()
         setContent {
@@ -59,4 +66,3 @@ fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationView
         }
     }
 }
-

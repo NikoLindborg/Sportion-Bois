@@ -38,7 +38,8 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
             override fun onLocationResult(p0: LocationResult) {
                 if (previousLocation != null) {
                     totalDistance += p0.lastLocation.distanceTo(previousLocation)
-                    locationViewModel.updateLocationData(totalDistance)
+                    locationViewModel.updateLocationDistanceTo(totalDistance)
+                    locationViewModel.updateLocationData(p0.lastLocation)
                 }
                 previousLocation = p0.lastLocation
                 Log.d("PREVLOC", totalDistance.toString())

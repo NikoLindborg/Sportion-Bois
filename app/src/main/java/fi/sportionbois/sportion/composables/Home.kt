@@ -10,7 +10,7 @@ import fi.sportionbois.sportion.components.HomeDataCard
 @Composable
 fun Home(navController: NavController) {
     CenteredColumnMaxWidthAndHeight {
-        LazyColumn() {
+        LazyColumn {
             items(2) {
                 HomeDataCard(
                     data = Message(

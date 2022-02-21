@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
-class LocationHandler() {
+class LocationHandler {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
@@ -28,7 +28,7 @@ class LocationHandler() {
         }
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
-                p0 ?: return
+                p0
                 for (location in p0.locations) {
                     Log.d(
                         "GEOLOCATION",

@@ -72,6 +72,10 @@ dependencies {
     // Google location
     implementation 'com.google.android.gms:play-services-location:19.0.1'
 
+    // FitApi
+    implementation("com.google.android.gms:play-services-fitness:21.0.1")
+    implementation("com.google.android.gms:play-services-auth:20.1.0")
+
     //LiveData and ViewModel
     def lifecycle_version = "2.4.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

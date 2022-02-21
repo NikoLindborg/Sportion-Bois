@@ -12,18 +12,48 @@ import androidx.compose.runtime.R
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.data.DataType
+import fi.sportionbois.sportion.GoogleFit.getFitApiData
 import androidx.preference.PreferenceManager
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.navigation.BottomNavigationBar
 import fi.sportionbois.sportion.navigation.NavigationGraph
 import fi.sportionbois.sportion.navigation.TopBar
 import fi.sportionbois.sportion.ui.theme.SportionTheme
+import java.time.LocalDate
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
+
+        //GoogleFit
+        /*
+        val fitnessOptions = FitnessOptions.builder()
+            .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
+            .build()
+
+        val account = GoogleSignIn.getAccountForExtension(this, fitnessOptions)
+
+        val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDate.now()
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val startTime = endTime.minusWeeks(1)
+
+        if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
+            GoogleSignIn.requestPermissions(
+                this, // your activity
+                1, // e.g. 1
+                account,
+                fitnessOptions)
+        } else {
+            getFitApiData(this, fitnessOptions, startTime, endTime)
+        }
+*/
 
 class MainActivity : ComponentActivity() {
 
@@ -37,7 +67,9 @@ class MainActivity : ComponentActivity() {
         locationViewModel = LocationViewModel(Application())
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.BODY_SENSORS,
+                android.Manifest.permission.ACTIVITY_RECOGNITION),
             0
         )
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))

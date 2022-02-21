@@ -49,7 +49,7 @@ fun HomeDataCard(data: Message, navController: NavController){
                         .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Column(){
+                Column {
                     Text(text = data.name, style = MaterialTheme.typography.body1)
                     Spacer(modifier = Modifier.height(1.dp))
                     Text(text = data.activity, style = MaterialTheme.typography.body2)

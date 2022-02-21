@@ -38,7 +38,7 @@ fun StartTracking(
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         //  Placeholder list for different sports
         val listOfSports = listOf("Biking", "Squat", "Deadlift")
-        LazyColumn() {
+        LazyColumn {
             items(listOfSports) {
                 SportTypeCardButton(text = it)
                 Spacer(modifier = Modifier.padding(20.dp))

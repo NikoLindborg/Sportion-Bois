@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion
 
+import androidx.core.content.ContextCompat
 import android.app.Application
 import android.content.pm.PackageManager
 import android.os.Build
@@ -29,6 +30,16 @@ import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 
+class MainActivity : ComponentActivity() {
+
+    companion object {
+        private lateinit var locationViewModel: LocationViewModel
+    }
+    
+    @ExperimentalMaterialApi
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         //GoogleFit
         /*
         val fitnessOptions = FitnessOptions.builder()
@@ -54,16 +65,6 @@ import org.osmdroid.views.MapView
             getFitApiData(this, fitnessOptions, startTime, endTime)
         }
 */
-
-class MainActivity : ComponentActivity() {
-
-    companion object {
-        private lateinit var locationViewModel: LocationViewModel
-    }
-    
-    @ExperimentalMaterialApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         locationViewModel = LocationViewModel(Application())
         ActivityCompat.requestPermissions(
             this,

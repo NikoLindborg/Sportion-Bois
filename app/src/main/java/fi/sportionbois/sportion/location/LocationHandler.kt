@@ -6,8 +6,10 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Looper
 import android.util.Log
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
 class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
@@ -40,13 +42,22 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
                     totalDistance += p0.lastLocation.distanceTo(previousLocation)
                     locationViewModel.updateLocationDistanceTo(totalDistance)
                     locationViewModel.updateLocationData(p0.lastLocation)
+                    locationViewModel.insertLocationDataPoints(
+                        LocationDataPoint(
+                            locationViewModel.currentActivityId.value ?: 0,
+                            p0.lastLocation.latitude.toFloat(),
+                            p0.lastLocation.longitude.toFloat(),
+                            p0.lastLocation.speed.toFloat(),
+                            totalDistance
+                        )
+                    )
                 }
                 previousLocation = p0.lastLocation
                 Log.d("PREVLOC", totalDistance.toString())
                 for (location in p0.locations) {
                     Log.d(
                         "GEOLOCATION",
-                        "new location latitude: ${location.latitude} and longitude: ${location.longitude}"
+                        "new location latitude: ${location.latitude} and longitude: ${location.longitude}, actid ${locationViewModel.currentActivityId.value}"
                     )
                 }
             }

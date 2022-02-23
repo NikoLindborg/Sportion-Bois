@@ -1,7 +1,9 @@
 package fi.sportionbois.sportion
 
+import android.app.Activity
 import androidx.core.content.ContextCompat
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -46,31 +48,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //GoogleFit
-        /*
-        val fitnessOptions = FitnessOptions.builder()
-            .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
-            .build()
-
-        val account = GoogleSignIn.getAccountForExtension(this, fitnessOptions)
-
-        val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDate.now()
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-        val startTime = endTime.minusWeeks(1)
-
-        if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
-            GoogleSignIn.requestPermissions(
-                this, // your activity
-                1, // e.g. 1
-                account,
-                fitnessOptions)
-        } else {
-            getFitApiData(this, fitnessOptions, startTime, endTime)
-        }*/
-
         locationViewModel = LocationViewModel(application)
         userViewModel = UserViewModel(application)
         userViewModel.insert(User("Koistine", "Juha", "Koistinen"))
@@ -87,7 +64,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SportionTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen(locationHandler, locationViewModel)
+                    MainScreen(locationHandler, locationViewModel, this, this)
                 }
             }
         }
@@ -96,14 +73,14 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel) {
+fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel, context: Context, activity: Activity) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         CenteredColumnMaxWidthAndHeight {
-            NavigationGraph(navController = navController, locationHandler, locationViewModel)
+            NavigationGraph(navController = navController, locationHandler, locationViewModel, context, activity)
         }
     }
 }

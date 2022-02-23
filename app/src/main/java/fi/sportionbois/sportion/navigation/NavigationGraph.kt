@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion.navigation
 
+import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
@@ -19,7 +20,9 @@ import fi.sportionbois.sportion.viewmodels.LocationViewModel
 fun NavigationGraph(
     navController: NavHostController,
     locationHandler: LocationHandler,
-    locationViewModel: LocationViewModel
+    locationViewModel: LocationViewModel,
+    context: Context,
+    activity: Activity
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
@@ -29,7 +32,7 @@ fun NavigationGraph(
             StartTracking(navController = navController, locationHandler, locationViewModel)
         }
         composable(BottomNavItem.Settings.screen_route) {
-            Settings(name = "Settings")
+            Settings(name = "Settings", context, activity)
         }
         composable("TrackingActive") {
             TrackingActive(navController = navController, locationHandler, locationViewModel)

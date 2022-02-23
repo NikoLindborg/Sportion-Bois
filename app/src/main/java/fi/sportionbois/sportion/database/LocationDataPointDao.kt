@@ -10,7 +10,7 @@ import fi.sportionbois.sportion.entities.LocationDataPoint
 @Dao
 interface LocationDataPointDao {
     @Query("SELECT * FROM locationdatapoint WHERE locationdatapoint.activity = :activityId")
-    fun getLocationDataPointsForId(activityId: Int): LiveData<List<LocationDataPoint>>
+    fun getLocationDataPointsForId(activityId: Int): LiveData<MutableList<LocationDataPoint>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(locationDataPoint: LocationDataPoint): Long

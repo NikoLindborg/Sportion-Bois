@@ -14,6 +14,7 @@ import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fi.sportionbois.sportion.entities.LocationActivity
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 @Composable
@@ -25,6 +26,8 @@ fun TrackingActive(
 ) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val acc = accelerometerViewModel.acceleration.observeAsState()
+    val testData = locationViewModel.getLatestLocationActivity().observeAsState()
+    locationViewModel.updateCurrentActivityId(testData.value?.toInt() ?: 0)
     accelerometerViewModel.listen()
     //Log.d("acc", acc.value.toString())
 

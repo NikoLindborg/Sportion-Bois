@@ -15,15 +15,16 @@ import androidx.compose.ui.unit.dp
 import com.github.mikephil.charting.data.Entry
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
-import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
-import kotlin.math.absoluteValue
 
 @Composable
 fun LocationResult(locationViewModel: LocationViewModel) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val locationData by locationViewModel.locationData.observeAsState()
+    val latestLocationActivityId = locationViewModel.getLatestLocationActivity().observeAsState()
+    val databaseDataPoints by locationViewModel.getDataPointsForId(latestLocationActivityId.value ?: 0).observeAsState()
+
     val lineEntrySpeed = ArrayList<Entry>()
     val lineEntryAltitude = ArrayList<Entry>()
 
@@ -35,7 +36,9 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             .padding(vertical = 32.dp, horizontal = 32.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().height(300.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ShowMap(lat = 1.1, lon = 1.1, address = "")
@@ -46,6 +49,7 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            //DetailComponent(firstValue = "%.1f".format(databaseData?.totalDistance), secondValue = "distance")
             DetailComponent(firstValue = "%.1f".format(value), secondValue = "distance")
         }
         Column(
@@ -60,6 +64,17 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             PlotChart(lineEntrySpeed, "Description for chart")
             Spacer(modifier = Modifier.padding(16.dp))
             PlotChart(lineEntryAltitude, "Description for chart")
+        }
+        Column() {
+            databaseDataPoints?.forEach {
+                Row {
+                    Text(text = it.lat.toString())
+                    Text(text = it.lon.toString())
+                    Text(text = it.speed.toString())
+                    Text(text = "Distance ${it.totalDistance}")
+                }
+                Spacer(modifier = Modifier.padding(20.dp))
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ import fi.sportionbois.sportion.components.SportTypeButton
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.components.SportTypeCardButton
+import fi.sportionbois.sportion.entities.LocationActivity
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 @ExperimentalMaterialApi
@@ -47,6 +48,7 @@ fun StartTracking(
         ButtonCHViolet(text = "START", onClick = {
             locationHandler.startLocationTracking()
             navController.navigate("TrackingActive")
+            locationViewModel.insert(LocationActivity( "Koistine", 0))
         })
     }
 }

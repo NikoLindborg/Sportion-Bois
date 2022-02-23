@@ -18,6 +18,8 @@ import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
 
+data class LonLat(val lat: Float, val lon: Float)
+
 @Composable
 fun LocationResult(locationViewModel: LocationViewModel) {
     val value by locationViewModel.travelledDistance.observeAsState()
@@ -27,6 +29,7 @@ fun LocationResult(locationViewModel: LocationViewModel) {
 
     val lineEntrySpeed = ArrayList<Entry>()
     val lineEntryAltitude = ArrayList<Entry>()
+    val geoPoints = mutableListOf<LonLat>()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -41,7 +44,14 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                 .height(300.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ShowMap(lat = 1.1, lon = 1.1, address = "")
+            if (databaseDataPoints != null) {
+                databaseDataPoints?.forEach {
+                    geoPoints.add(LonLat(it.lat, it.lon))
+                }
+                ShowMap(geoList = geoPoints)
+            } else {
+                Text(text = "No map data available")
+            }
         }
         Text("Bike details", style = MaterialTheme.typography.body1)
         Row(
@@ -57,13 +67,21 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            locationData?.forEachIndexed { index, element ->
-                lineEntrySpeed.add(Entry(index.toFloat(), element.speed.toFloat()))
-                lineEntryAltitude.add(Entry(index.toFloat(), element.altitude.toFloat()))
+            if (databaseDataPoints != null) {
+                databaseDataPoints?.forEachIndexed { index, element ->
+                    lineEntrySpeed.add(Entry(index.toFloat(), element.speed))
+                    //  Using total distance for now, change to altitude once Room is updated
+                    lineEntryAltitude.add(Entry(index.toFloat(), element.totalDistance))
+                }
+                if (lineEntrySpeed.count() > 0) {
+                    PlotChart(lineEntrySpeed, "Description for chart")
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    PlotChart(lineEntryAltitude, "Description for chart")
+                } else {
+                    Text(text = "No graph data available")
+                }
+
             }
-            PlotChart(lineEntrySpeed, "Description for chart")
-            Spacer(modifier = Modifier.padding(16.dp))
-            PlotChart(lineEntryAltitude, "Description for chart")
         }
         Column() {
             databaseDataPoints?.forEach {

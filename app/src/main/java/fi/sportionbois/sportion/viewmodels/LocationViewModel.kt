@@ -40,7 +40,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         activityDB.locationActivityDao().getLatestActivityId()
 
     //  Returns LocationDataPoints for the given LocationActivity
-    fun getDataPointsForId(activityId: Int): LiveData<List<LocationDataPoint>> =
+    fun getDataPointsForId(activityId: Int): LiveData<MutableList<LocationDataPoint>> =
         activityDB.locationDataPointDao().getLocationDataPointsForId(activityId = activityId)
 
     //  Insert LocationActivity with username and activityId information

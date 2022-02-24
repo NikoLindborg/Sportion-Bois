@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import fi.sportionbois.sportion.entities.LocationActivity
 import fi.sportionbois.sportion.entities.LocationDataPoint
+import fi.sportionbois.sportion.entities.SportActivity
 import fi.sportionbois.sportion.entities.User
 
-@Database(entities = [(LocationActivity::class), (User::class), (LocationDataPoint::class)], version = 1)
+@Database(entities = [(SportActivity::class), (User::class), (LocationDataPoint::class)], version = 1)
 abstract class ActivityDB : RoomDatabase() {
-    abstract fun locationActivityDao(): LocationActivityDao
+    abstract fun sportActivityDao(): SportActivityDao
     abstract fun locationDataPointDao(): LocationDataPointDao
     abstract fun userDao(): UserDao
 
@@ -23,8 +23,9 @@ abstract class ActivityDB : RoomDatabase() {
                 sInstance =
                     Room.databaseBuilder(
                         context.applicationContext,
-                        ActivityDB::class.java, "activities.db"
-                    ).build()
+                        ActivityDB::class.java, "activities.db")
+                        .fallbackToDestructiveMigration()
+                        .build()
             }
             return sInstance!!
         }

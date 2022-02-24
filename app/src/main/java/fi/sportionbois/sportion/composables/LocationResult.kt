@@ -24,7 +24,7 @@ data class LonLat(val lat: Float, val lon: Float)
 fun LocationResult(locationViewModel: LocationViewModel) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val locationData by locationViewModel.locationData.observeAsState()
-    val latestLocationActivityId = locationViewModel.getLatestLocationActivity().observeAsState()
+    val latestLocationActivityId = locationViewModel.getLatestLocationActivity("Biking").observeAsState()
     val databaseDataPoints by locationViewModel.getDataPointsForId(latestLocationActivityId.value ?: 0).observeAsState()
 
     val lineEntrySpeed = ArrayList<Entry>()

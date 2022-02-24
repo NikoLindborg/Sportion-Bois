@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [ForeignKey(
-        entity = LocationActivity::class,
+        entity = SportActivity::class,
         onDelete = ForeignKey.CASCADE,
         parentColumns = ["activityId"],
         childColumns = ["activity"]

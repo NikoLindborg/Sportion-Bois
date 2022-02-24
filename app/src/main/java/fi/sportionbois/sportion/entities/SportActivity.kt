@@ -11,10 +11,11 @@ import androidx.room.ForeignKey.CASCADE
         childColumns = ["user"]
     )]
 )
-data class LocationActivity(
+data class SportActivity(
     val user: String,
     @PrimaryKey(autoGenerate = true)
-    val activityId: Int
+    val activityId: Int,
+    val sportType: String
 ) {
     override fun toString() = "$user activityId $activityId"
 }

@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.TypeConverter
 import fi.sportionbois.sportion.database.ActivityDB
-import fi.sportionbois.sportion.entities.LocationActivity
 import fi.sportionbois.sportion.entities.LocationDataPoint
+import fi.sportionbois.sportion.entities.SportActivity
 import fi.sportionbois.sportion.entities.User
 import kotlinx.coroutines.launch
 import java.util.*
@@ -25,28 +25,28 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     var locationData: MutableLiveData<MutableList<Location>> = _locationData
 
     //  Livedata variable for storing the activityId of current activity. Used for binding
-    //  LocationDataPoint entities to LocationActivity entity
+    //  LocationDataPoint entities to SportActivity entity
     private var _currentActivityId: MutableLiveData<Int> = MutableLiveData(0)
     var currentActivityId: LiveData<Int> = _currentActivityId
 
     private val activityDB = ActivityDB.get(application)
 
-    //  Returns a list of all the Location Activities
-    fun getAllLocationActivities(username: String): LiveData<List<LocationActivity>> =
-        activityDB.locationActivityDao().getAll()
+    //  Returns a list of all the Sport Activities
+    fun getAllSportActivities(username: String): LiveData<List<SportActivity>> =
+        activityDB.sportActivityDao().getAll()
 
-    //  Sorts all the LocationActivities based on the activityId and returns the last one
-    fun getLatestLocationActivity(): LiveData<Int> =
-        activityDB.locationActivityDao().getLatestActivityId()
+    //  Sorts all the SportActivities based on the activityId and returns the last one
+    fun getLatestLocationActivity(sportType: String): LiveData<Int> =
+        activityDB.sportActivityDao().getLatestActivityId(sportType)
 
     //  Returns LocationDataPoints for the given LocationActivity
     fun getDataPointsForId(activityId: Int): LiveData<MutableList<LocationDataPoint>> =
         activityDB.locationDataPointDao().getLocationDataPointsForId(activityId = activityId)
 
     //  Insert LocationActivity with username and activityId information
-    fun insert(locationActivity: LocationActivity) {
+    fun insert(sportActivity: SportActivity) {
         viewModelScope.launch {
-            activityDB.locationActivityDao().insert(locationActivity = locationActivity)
+            activityDB.sportActivityDao().insert(sportActivity)
         }
     }
 

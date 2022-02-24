@@ -23,7 +23,6 @@ import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import fi.sportionbois.sportion.GoogleFit.getFitApiData
 import androidx.preference.PreferenceManager
-import fi.sportionbois.sportion.entities.LocationActivity
 import fi.sportionbois.sportion.entities.User
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.navigation.BottomNavigationBar

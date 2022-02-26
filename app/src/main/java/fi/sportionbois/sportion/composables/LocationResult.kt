@@ -1,6 +1,8 @@
 package fi.sportionbois.sportion.composables
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,6 +18,9 @@ import com.github.mikephil.charting.data.Entry
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.ArrayList
 
 data class LonLat(val lat: Float, val lon: Float)
@@ -26,7 +31,6 @@ fun LocationResult(locationViewModel: LocationViewModel) {
     val locationData by locationViewModel.locationData.observeAsState()
     val latestLocationActivityId = locationViewModel.getLatestLocationActivity("Biking").observeAsState()
     val databaseDataPoints by locationViewModel.getDataPointsForId(latestLocationActivityId.value ?: 0).observeAsState()
-
     val lineEntrySpeed = ArrayList<Entry>()
     val lineEntryAltitude = ArrayList<Entry>()
     val geoPoints = mutableListOf<LonLat>()

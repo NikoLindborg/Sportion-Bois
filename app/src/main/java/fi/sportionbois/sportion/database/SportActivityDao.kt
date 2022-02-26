@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion.database
 
+import androidx.compose.runtime.State
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import fi.sportionbois.sportion.entities.SportActivity
@@ -17,4 +18,8 @@ interface SportActivityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sportActivity: SportActivity): Long
+
+    @Query("UPDATE sportactivity SET endTime=:newEndTime where activityId = :activityID")
+    suspend fun insertEndTime(activityID: Int, newEndTime: Long)
+
 }

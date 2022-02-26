@@ -17,7 +17,7 @@ import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: LocalDate, endTime: LocalDate){
+fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: Long, endTime: Long){
 
     val readRequest =
         DataReadRequest.Builder()
@@ -30,8 +30,7 @@ fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: 
             // bucketByTime allows for a time span, whereas bucketBySession allows
             // bucketing by <a href="/fit/android/using-sessions">sessions</a>.
             .bucketByTime(1, TimeUnit.DAYS)
-            .setTimeRange(startTime.atStartOfDay(ZoneId.systemDefault()).toEpochSecond(), endTime.atStartOfDay(
-                ZoneId.systemDefault()).toEpochSecond(), TimeUnit.SECONDS)
+            .setTimeRange(startTime, endTime, TimeUnit.SECONDS)
             .build()
 
     fun dumpDataSet(dataSet: DataSet) {

@@ -54,10 +54,10 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                 }
                 ShowMap(geoList = geoPoints)
             } else {
-                Text(text = "No map data available")
+                Text(text = "No map data available", color = MaterialTheme.colors.onBackground)
             }
         }
-        Text("Bike details", style = MaterialTheme.typography.body1)
+        Text("Bike details", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onBackground)
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +82,7 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                     Spacer(modifier = Modifier.padding(16.dp))
                     PlotChart(lineEntryAltitude, "Description for chart")
                 } else {
-                    Text(text = "No graph data available")
+                    Text(text = "No graph data available", color = MaterialTheme.colors.onBackground)
                 }
 
             }

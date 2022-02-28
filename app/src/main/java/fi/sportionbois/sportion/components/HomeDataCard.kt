@@ -27,12 +27,12 @@ fun HomeDataCard(data: Message, navController: NavController){
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(16.dp)
-            .clickable { navController.navigate("LiftDetails") },
-        border = BorderStroke(1.5.dp, MaterialTheme.colors.primary),
+            .clickable { navController.navigate("LiftDetails") }
     ){
         Column(modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp),
+            .height(300.dp)
+            .background(MaterialTheme.colors.primaryVariant),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
@@ -51,9 +51,9 @@ fun HomeDataCard(data: Message, navController: NavController){
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    Text(text = data.name, style = MaterialTheme.typography.body1)
+                    Text(text = data.name, style = MaterialTheme.typography.h3, color = MaterialTheme.colors.onBackground)
                     Spacer(modifier = Modifier.height(1.dp))
-                    Text(text = data.activity, style = MaterialTheme.typography.body2)
+                    Text(text = data.activity, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onBackground)
                 }
             }
             //Body
@@ -72,9 +72,9 @@ fun HomeDataCard(data: Message, navController: NavController){
                 .weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly){
-                Text(data.info1)
-                Text(data.info2)
-                Text(data.info3)
+                Text(data.info1, color = MaterialTheme.colors.onBackground)
+                Text(data.info2, color = MaterialTheme.colors.onBackground)
+                Text(data.info3, color = MaterialTheme.colors.onBackground)
             }
         }
     }

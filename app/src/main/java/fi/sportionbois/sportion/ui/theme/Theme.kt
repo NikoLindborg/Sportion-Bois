@@ -18,7 +18,7 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = ChineseViolet,
-    primaryVariant = MiddleBlue,
+    primaryVariant = Color.White,
     secondary = MediumTurquoise,
     background = Color.White,
     onBackground = SpaceCrayola,

@@ -2,23 +2,23 @@ package fi.sportionbois.sportion.viewmodels
 
 import android.app.Application
 import android.location.Location
-import android.util.Log
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.State
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.room.TypeConverter
 import fi.sportionbois.sportion.database.ActivityDB
+import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.entities.SportActivity
-import fi.sportionbois.sportion.entities.User
 import kotlinx.coroutines.launch
-import java.util.*
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
     private var _travelledDistance: MutableLiveData<Float> = MutableLiveData(0f)
     var travelledDistance: LiveData<Float> = _travelledDistance
+    var selected: MutableLiveData<Boolean> = MutableLiveData(false)
+    var reps: MutableLiveData<Long> = MutableLiveData(0)
+    var weight: MutableLiveData<Long> = MutableLiveData(0)
 
     private var _locationData: MutableLiveData<MutableList<Location>> =
         MutableLiveData(mutableListOf())
@@ -68,4 +68,19 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     fun updateCurrentActivityId(activityId: Int) {
         _currentActivityId.value = activityId
     }
+
+    //Insert endtime into activity
+    fun insertEndTime(activityId: Int, endTime: Long){
+        viewModelScope.launch {
+            activityDB.sportActivityDao().insertEndTime(activityId, endTime)
+        }
+    }
+
+    //Insert reps & weight to room
+    fun insertGymData(gymData: GymData){
+        viewModelScope.launch {
+            activityDB.gymDataDao().insert(gymData)
+        }
+    }
+
 }

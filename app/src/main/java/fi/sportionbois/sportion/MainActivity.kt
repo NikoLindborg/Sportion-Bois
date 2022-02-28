@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.R
@@ -41,14 +42,21 @@ class MainActivity : ComponentActivity() {
     companion object {
         private lateinit var locationViewModel: LocationViewModel
         private lateinit var userViewModel: UserViewModel
+        private lateinit var accelerometerViewModel: AccelerometerViewModel
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val fitnessOptions = FitnessOptions.builder()
+            .addDataType(DataType.TYPE_HEART_RATE_BPM, FitnessOptions.ACCESS_READ)
+            .build()
+
         locationViewModel = LocationViewModel(application)
         userViewModel = UserViewModel(application)
+        accelerometerViewModel = AccelerometerViewModel(application)
         userViewModel.insert(User("Koistine", "Juha", "Koistinen"))
         ActivityCompat.requestPermissions(
             this,
@@ -63,23 +71,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             SportionTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen(locationHandler, locationViewModel, this, this)
+                    MainScreen(locationHandler, locationViewModel, this, this, fitnessOptions, accelerometerViewModel)
                 }
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel, context: Context, activity: Activity) {
+fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel, context: Context, activity: Activity,
+               fitnessOptions: FitnessOptions, accelerometerViewModel: AccelerometerViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         CenteredColumnMaxWidthAndHeight {
-            NavigationGraph(navController = navController, locationHandler, locationViewModel, context, activity)
+            NavigationGraph(navController = navController, locationHandler, locationViewModel, context, activity, fitnessOptions, accelerometerViewModel)
         }
     }
 }

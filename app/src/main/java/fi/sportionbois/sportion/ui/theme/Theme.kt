@@ -13,7 +13,7 @@ private val DarkColorPalette = darkColors(
     secondary = MediumTurquoise,
     background = SpaceCrayola,
     onBackground = LightGray,
-    onPrimary = CustomGreen
+    onPrimary = CustomGreen,
 )
 
 private val LightColorPalette = lightColors(

@@ -31,7 +31,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
             .height(420.dp)
     ) {
         Column(
-            modifier = Modifier.background(MaterialTheme.colors.primaryVariant.copy(0.4f)),
+            modifier = Modifier.background(MaterialTheme.colors.primaryVariant),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -40,7 +40,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "RPE over last 7 days")
+                Text(text = "RPE over last 7 days", color = MaterialTheme.colors.onBackground)
             }
             Row(
                 modifier = Modifier
@@ -48,7 +48,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(start = 20.dp, end = 20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "RPE", style = MaterialTheme.typography.subtitle1)
+                Text(text = "RPE", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onBackground)
             }
             AndroidView(
                 modifier = Modifier
@@ -100,7 +100,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(start = 20.dp, end = 20.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(text = "days", style = MaterialTheme.typography.subtitle1)
+                Text(text = "days", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onBackground)
             }
             Row(
                 modifier = Modifier
@@ -108,7 +108,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", color = MaterialTheme.colors.onBackground)
             }
         }
     }

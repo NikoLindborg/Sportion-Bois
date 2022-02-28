@@ -43,9 +43,9 @@ fun TrackingActive(
     //Log.d("acc", acc.value.toString())
 
     //Add gymdata to room
-    locationViewModel.insertGymData(
+    /*locationViewModel.insertGymData(
         GymData(locationViewModel.currentActivityId.value ?: 0,locationViewModel.weight.value,locationViewModel.reps.value, 0)
-    )
+    )*/
 
     CenteredColumnMaxWidthAndHeight {
         RPEBar(rpeValue = "%.1f".format(value))

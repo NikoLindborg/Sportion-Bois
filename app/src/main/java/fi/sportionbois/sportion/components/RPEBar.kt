@@ -28,12 +28,11 @@ fun RPEBar(rpeValue: String) {
         shape = CircleShape,
         modifier = Modifier
             .size(120.dp)
-            .shadow(4.dp, CircleShape, clip = false)
             .border(BorderStroke(2.dp, MaterialTheme.colors.secondary), shape = CircleShape),
         contentPadding = PaddingValues(0.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colors.onBackground,
-            backgroundColor = MaterialTheme.colors.background,
+            backgroundColor = Color.Transparent
         )
     ) {
         Column(

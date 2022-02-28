@@ -35,8 +35,8 @@ fun DetailComponent(firstValue: String, secondValue: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = firstValue)
-            Text(text = secondValue)
+            Text(text = firstValue, color = MaterialTheme.colors.onBackground)
+            Text(text = secondValue, color = MaterialTheme.colors.onBackground)
         }
     }
 

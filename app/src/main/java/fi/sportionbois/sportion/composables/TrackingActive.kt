@@ -1,10 +1,16 @@
 package fi.sportionbois.sportion.composables
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
+import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,12 +23,18 @@ import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.android.gms.fitness.FitnessOptions
-import fi.sportionbois.sportion.GoogleFit.getFitApiData
+import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
+import fi.sportionbois.sportion.viewmodels.GymViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.chrono.HijrahChronology.INSTANCE
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -32,20 +44,20 @@ fun TrackingActive(
     locationViewModel: LocationViewModel,
     accelerometerViewModel: AccelerometerViewModel = viewModel(),
     context: Context,
-    fitnessOptions: FitnessOptions
+    fitnessOptions: FitnessOptions,
+    gymViewModel: GymViewModel
     ) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val acc = accelerometerViewModel.acceleration.observeAsState()
-    val testData = locationViewModel.getLatestLocationActivity("Biking").observeAsState()
-    val latestLocationActivityId = locationViewModel.getLatestLocationActivity("Biking").observeAsState()
-    locationViewModel.updateCurrentActivityId(testData.value?.toInt() ?: 0)
+    val activityId = locationViewModel.getLatestActivityId().observeAsState()
+    Log.d("trueai", activityId.value.toString())
+    locationViewModel.updateCurrentActivityId(activityId.value ?: 0)
     accelerometerViewModel.listen()
+    var currentId = locationViewModel.currentActivityId.observeAsState()
+    val sportType = locationViewModel.sportType.observeAsState()
+    val reps = gymViewModel.reps.observeAsState()
+    val weight = gymViewModel.weight.observeAsState()
     //Log.d("acc", acc.value.toString())
-
-    //Add gymdata to room
-    /*locationViewModel.insertGymData(
-        GymData(locationViewModel.currentActivityId.value ?: 0,locationViewModel.weight.value,locationViewModel.reps.value, 0)
-    )*/
 
     CenteredColumnMaxWidthAndHeight {
         RPEBar(rpeValue = "%.1f".format(value))
@@ -54,12 +66,26 @@ fun TrackingActive(
             text = "STOP TRACKING",
             onClick = {
                 locationHandler.stopLocationTracking()
-                navController.navigate("LocationActivityDetails")
+                if(locationViewModel.sportType.value === "Biking"){
+                    navController.navigate("LocationActivityDetails")
+                } else {
+                    navController.navigate("LiftDetails" + "/${sportType.value.toString()}"
+                            + "/${reps.value.toString()}" + "/${weight.value.toString()}")
+                }
+
+                if(currentId.value != null){
+                    Log.d("truein", currentId.value.toString())
+                        gymViewModel.insertGymData(
+                            GymData(currentId.value ?: 0,weight.value,reps.value,0)
+                        )
+                        gymViewModel.selected.value = false
+                }
+
                 accelerometerViewModel.stopListening()
 
                 //Insert end time to activity
                 val endTime = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC)
-                locationViewModel.insertEndTime(latestLocationActivityId.value ?: 0, endTime)
+                locationViewModel.insertEndTime(currentId.value ?: 0, endTime)
             })
     }
 }

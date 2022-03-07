@@ -7,14 +7,17 @@ import fi.sportionbois.sportion.entities.SportActivity
 
 @Dao
 interface SportActivityDao {
-    @Query("SELECT * FROM sportactivity")
+    @Query("SELECT * FROM sportactivity ORDER BY activityId ASC")
     fun getAll(): LiveData<List<SportActivity>>
 
     @Query("SELECT * FROM sportactivity WHERE sportactivity.user = :username")
     fun getUserActivities(username: String): LiveData<SportActivity>
 
     @Query("SELECT activityId FROM sportactivity WHERE sportactivity.sportType = :sportType ORDER BY activityId DESC LIMIT 1")
-    fun getLatestActivityId(sportType: String): LiveData<Int>
+    fun getLatestLocationActivityId(sportType: String): LiveData<Int>
+
+    @Query("SELECT activityId FROM sportactivity ORDER BY activityId DESC LIMIT 1")
+    fun getLatestActivityId(): LiveData<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sportActivity: SportActivity): Long

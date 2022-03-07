@@ -14,11 +14,11 @@ import java.time.LocalDate
 )
 data class SportActivity(
     val user: String,
-    @PrimaryKey(autoGenerate = true)
-    val activityId: Int,
     val sportType: String,
     val startTime: Long?,
-    val endTime: Long?
+    val endTime: Long?,
+    @PrimaryKey(autoGenerate = true)
+    val activityId: Int,
 ) {
     override fun toString() = "$user activityId $activityId"
 }

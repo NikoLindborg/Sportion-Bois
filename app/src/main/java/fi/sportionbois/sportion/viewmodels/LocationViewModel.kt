@@ -11,6 +11,9 @@ import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.entities.SportActivity
+import fi.sportionbois.sportion.repositories.GymDataRepository
+import fi.sportionbois.sportion.repositories.SportActivityRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,6 +22,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     var selected: MutableLiveData<Boolean> = MutableLiveData(false)
     var reps: MutableLiveData<Long> = MutableLiveData(0)
     var weight: MutableLiveData<Long> = MutableLiveData(0)
+    var sportType: MutableLiveData<String> = MutableLiveData("")
 
     private var _locationData: MutableLiveData<MutableList<Location>> =
         MutableLiveData(mutableListOf())
@@ -30,14 +34,22 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     var currentActivityId: LiveData<Int> = _currentActivityId
 
     private val activityDB = ActivityDB.get(application)
+    private var allData: LiveData<List<SportActivity>>
+    private val sportAcivityRepository: SportActivityRepository
+
+    init{
+        val saDB = ActivityDB.get(application).sportActivityDao()
+        sportAcivityRepository = SportActivityRepository(saDB)
+        allData = sportAcivityRepository.getAllData()
+    }
 
     //  Returns a list of all the Sport Activities
-    fun getAllSportActivities(username: String): LiveData<List<SportActivity>> =
+    fun getAllSportActivities(): LiveData<List<SportActivity>> =
         activityDB.sportActivityDao().getAll()
 
     //  Sorts all the SportActivities based on the activityId and returns the last one
     fun getLatestLocationActivity(sportType: String): LiveData<Int> =
-        activityDB.sportActivityDao().getLatestActivityId(sportType)
+        activityDB.sportActivityDao().getLatestLocationActivityId(sportType)
 
     //  Returns LocationDataPoints for the given LocationActivity
     fun getDataPointsForId(activityId: Int): LiveData<MutableList<LocationDataPoint>> =
@@ -76,11 +88,11 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    //Insert reps & weight to room
-    fun insertGymData(gymData: GymData){
-        viewModelScope.launch {
-            activityDB.gymDataDao().insert(gymData)
-        }
-    }
+    //get latest activity id
+    fun getLatestActivityId(): LiveData<Int> =
+        activityDB.sportActivityDao().getLatestActivityId()
 
+    //test get all data
+    fun getAllData(): LiveData<List<SportActivity>> =
+        allData
 }

@@ -13,11 +13,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
 @ExperimentalMaterialApi
@@ -25,7 +27,8 @@ import fi.sportionbois.sportion.viewmodels.LocationViewModel
 fun SportTypeCardButton(
     text: String,
     modifier: Modifier,
-    locationViewModel: LocationViewModel
+    locationViewModel: LocationViewModel,
+    gymViewModel: GymViewModel
 ) {
     var expandedState by remember { mutableStateOf(false)}
     var repsInput by remember { mutableStateOf("") }
@@ -35,7 +38,8 @@ fun SportTypeCardButton(
         modifier = modifier
             .width(325.dp)
                 //need to correct colors on border
-            .then(if (expandedState && !locationViewModel.selected.value!!) modifier.border(BorderStroke(2.dp, MaterialTheme.colors.primaryVariant),  RoundedCornerShape(10.dp)) else modifier)
+            .then(if (expandedState && !locationViewModel.selected.value!!) modifier.border(BorderStroke(2.dp, MaterialTheme.colors.primaryVariant),  RoundedCornerShape(10.dp))
+            else modifier)
             .animateContentSize(
                 animationSpec = tween(delayMillis = 300, easing = LinearOutSlowInEasing)
             )
@@ -77,26 +81,43 @@ fun SportTypeCardButton(
                     tint = MaterialTheme.colors.onBackground
                 )
             }
-            if(expandedState && !locationViewModel.selected.value!!){
-                locationViewModel.selected.value = true
-                Row(modifier = Modifier .padding(top = 64.dp).fillMaxWidth().padding(horizontal = 32.dp)){
-                    TextField(value = repsInput, onValueChange = {repsInput = it}, label = { Text("Reps") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                if(expandedState){
+                    locationViewModel.selected.value = true
+                    if(text != "Biking") {
+                        Row(
+                            modifier = Modifier.padding(top = 64.dp).fillMaxWidth()
+                                .padding(horizontal = 32.dp)
+                        ) {
+                            TextField(value = repsInput,
+                                onValueChange = { repsInput = it },
+                                label = { Text("Reps") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.padding(top = 128.dp, bottom = 32.dp).fillMaxWidth()
+                                .padding(horizontal = 32.dp)
+                        ) {
+                            TextField(value = weightInput,
+                                onValueChange = { weightInput = it },
+                                label = { Text("Weight") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                        }
+                        if (repsInput != "" && weightInput != "") {
+                            gymViewModel.reps.value = repsInput.toLong()
+                            gymViewModel.weight.value = weightInput.toLong()
+                            locationViewModel.sportType.value = text
+                        }
+                    } else if(text === "Biking" && locationViewModel.selected.value!!) {
+                        locationViewModel.sportType.value = text
+                    }
                 }
-                Row(modifier = Modifier .padding(top = 128.dp, bottom = 32.dp).fillMaxWidth().padding(horizontal = 32.dp)){
-                    TextField(value = weightInput, onValueChange = {weightInput = it}, label = { Text("Weight") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-                }
-                if(repsInput != "" && weightInput != ""){
-                    locationViewModel.reps.value = repsInput.toLong()
-                    locationViewModel.weight.value = weightInput.toLong()
-                }
-            } else {
-                locationViewModel.selected.value = false
             }
         }
     }
-}
+
+
 
 /*
 @ExperimentalMaterialApi

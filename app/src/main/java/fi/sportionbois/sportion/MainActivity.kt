@@ -35,6 +35,7 @@ import fi.sportionbois.sportion.ui.theme.SportionTheme
 import java.time.LocalDate
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
+import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -46,6 +47,8 @@ class MainActivity : ComponentActivity() {
     companion object {
         private lateinit var locationViewModel: LocationViewModel
         private lateinit var accelerometerViewModel: AccelerometerViewModel
+        private lateinit var gymViewModel: GymViewModel
+        private lateinit var userViewModel: UserViewModel
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -58,6 +61,9 @@ class MainActivity : ComponentActivity() {
             .build()
 
         locationViewModel = LocationViewModel(application)
+        gymViewModel = GymViewModel(application)
+        userViewModel = UserViewModel(application)
+
         accelerometerViewModel = AccelerometerViewModel(application)
         //userViewModel.insert(User("Koistine", "Juha", "Koistinen"))
 
@@ -74,7 +80,6 @@ class MainActivity : ComponentActivity() {
         var locationHandler = LocationHandler(applicationContext, locationViewModel)
         locationHandler.initializeLocation()
         setContent {
-            val userViewModel = UserViewModel(Application())
             val user = userViewModel.getAll().observeAsState()
             var userCount = user.value?.count() ?: 0
             SportionTheme {
@@ -89,7 +94,8 @@ class MainActivity : ComponentActivity() {
                             this,
                             this,
                             fitnessOptions,
-                            accelerometerViewModel
+                            accelerometerViewModel,
+                            gymViewModel
                         )
                     }
                 }
@@ -98,17 +104,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterialApi
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreen(
-    locationHandler: LocationHandler,
-    locationViewModel: LocationViewModel,
-    context: Context,
-    activity: Activity,
-    fitnessOptions: FitnessOptions,
-    accelerometerViewModel: AccelerometerViewModel
-) {
+fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel, context: Context, activity: Activity,
+               fitnessOptions: FitnessOptions, accelerometerViewModel: AccelerometerViewModel, gymViewModel: GymViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
@@ -122,7 +122,8 @@ fun MainScreen(
                 context,
                 activity,
                 fitnessOptions,
-                accelerometerViewModel
+                accelerometerViewModel,
+                gymViewModel
             )
         }
     }

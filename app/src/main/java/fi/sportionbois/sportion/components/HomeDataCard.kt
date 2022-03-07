@@ -18,16 +18,24 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fi.sportionbois.sportion.Message
 import fi.sportionbois.sportion.R
+import fi.sportionbois.sportion.composables.LonLat
+import fi.sportionbois.sportion.composables.ShowMap
+import fi.sportionbois.sportion.entities.GymData
+import fi.sportionbois.sportion.entities.LocationDataPoint
+import fi.sportionbois.sportion.entities.SportActivity
 
 
 @Composable
-fun HomeDataCard(data: Message, navController: NavController){
+fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavController, databaseDataPoints: List<LocationDataPoint>?){
+    val geoPoints = mutableListOf<LonLat>()
+
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(16.dp)
-            .clickable { navController.navigate("LiftDetails") }
+            .clickable { navController.navigate("LiftDetails" + "/${activity.sportType}"
+                    + "/${gymData?.reps}" + "/${gymData?.weight} ") }
     ){
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -51,9 +59,9 @@ fun HomeDataCard(data: Message, navController: NavController){
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    Text(text = data.name, style = MaterialTheme.typography.h3, color = MaterialTheme.colors.onBackground)
+                    Text(text = activity.user, style = MaterialTheme.typography.h3, color = MaterialTheme.colors.onBackground)
                     Spacer(modifier = Modifier.height(1.dp))
-                    Text(text = data.activity, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onBackground)
+                    Text(text = activity.sportType, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onBackground)
                 }
             }
             //Body
@@ -63,18 +71,55 @@ fun HomeDataCard(data: Message, navController: NavController){
                 .weight(2f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center){
-                    RPEBar(data.body)
+                if(activity.sportType == "Squat" || activity.sportType == "Deadlift") {
+                    if (gymData != null) {
+                        RPEBar(gymData.rpe.toString())
+                    }
+                }
+                if(activity.sportType == "Biking") {
+                    if (databaseDataPoints != null) {
+                        databaseDataPoints.forEach {
+                            geoPoints.add(LonLat(it.lat, it.lon))
+                        }
+                        ShowMap(geoList = geoPoints)
+                    } else {
+                        Text(text = "No map data available", color = MaterialTheme.colors.onBackground)
+                    }
+                }
             }
             //Bottom Info
-            Row(modifier = Modifier
+            Column(modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
                 .weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly){
-                Text(data.info1, color = MaterialTheme.colors.onBackground)
-                Text(data.info2, color = MaterialTheme.colors.onBackground)
-                Text(data.info3, color = MaterialTheme.colors.onBackground)
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally){
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly){
+                    Text(if(activity.sportType == "Biking"){""} else {"Weight"} , color = MaterialTheme.colors.onBackground)
+                    Text("Reps", color = MaterialTheme.colors.onBackground)
+                }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly){
+                    if(activity.sportType == "Squat" || activity.sportType == "Deadlift") {
+                        if (gymData != null) {
+                            Text(
+                                gymData.weight.toString(),
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                        if (gymData != null) {
+                            Text(gymData.reps.toString(), color = MaterialTheme.colors.onBackground)
+                        }
+                    }
+                }
+                //Text(data.info3, color = MaterialTheme.colors.onBackground)
             }
         }
     }

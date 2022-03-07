@@ -21,6 +21,7 @@ import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.components.SportTypeCardButton
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.SportActivity
+import fi.sportionbois.sportion.viewmodels.GymViewModel
 import java.time.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,15 +30,19 @@ import java.time.*
 fun StartTracking(
     navController: NavController,
     locationHandler: LocationHandler,
-    locationViewModel: LocationViewModel
+    locationViewModel: LocationViewModel,
+    gymViewModel: GymViewModel
 ) {
+
+    val sportType = locationViewModel.sportType.observeAsState().value
+    val isSelected = locationViewModel.selected.observeAsState()
 
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         //  Placeholder list for different sports
         val listOfSports = listOf("Biking", "Squat", "Deadlift")
         LazyColumn {
             items(listOfSports) {
-                SportTypeCardButton(text = it, modifier = Modifier, locationViewModel)
+                SportTypeCardButton(text = it, modifier = Modifier, locationViewModel, gymViewModel)
                 Spacer(modifier = Modifier.padding(20.dp))
             }
         }
@@ -46,10 +51,7 @@ fun StartTracking(
             navController.navigate("TrackingActive")
             //get start time in epoch seconds to get as accurate timestamp as possible
             val startTime = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC)
-            locationViewModel.insert(SportActivity( "Koistine", 0, "Biking", startTime, null))
-            if(locationViewModel.selected.value === true){
-                Log.d("true","yeye")
-            }
+            locationViewModel.insert(SportActivity( "Koistine",sportType.toString(), startTime, null, 0))
         })
     }
 }

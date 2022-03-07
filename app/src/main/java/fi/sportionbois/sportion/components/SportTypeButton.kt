@@ -21,10 +21,9 @@ import fi.sportionbois.sportion.ui.theme.SportionTheme
 fun SportTypeButton(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
 ) {
     Button(
-        onClick = onClick,
+        onClick = { /**/ },
         modifier = modifier
             .height(90.dp)
             .width(325.dp),
@@ -75,9 +74,7 @@ fun SportTypeButton(
 fun SportTypeCardPreview() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            SportTypeButton(text = "Biking") {
-
-            }
+            SportTypeButton(text = "Biking")
         }
     }
 }

@@ -68,7 +68,8 @@ fun CenteredColumnMaxWidthAndHeight(children: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .padding(bottom = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

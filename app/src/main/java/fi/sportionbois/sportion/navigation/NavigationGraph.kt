@@ -17,6 +17,7 @@ import fi.sportionbois.sportion.*
 import fi.sportionbois.sportion.composables.*
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
+import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,26 +30,30 @@ fun NavigationGraph(
     context: Context,
     activity: Activity,
     fitnessOptions: FitnessOptions,
-    accelometerViewModel: AccelerometerViewModel
+    accelometerViewModel: AccelerometerViewModel,
+    gymViewModel: GymViewModel
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            Home(navController = navController)
+            Home(navController = navController, locationViewModel, gymViewModel)
         }
         composable(BottomNavItem.StartTracking.screen_route) {
-            StartTracking(navController = navController, locationHandler, locationViewModel)
+            StartTracking(navController = navController, locationHandler, locationViewModel, gymViewModel)
         }
         composable(BottomNavItem.Settings.screen_route) {
             Settings(name = "Settings", context, activity)
         }
         composable("TrackingActive") {
-            TrackingActive(navController = navController, locationHandler, locationViewModel, accelometerViewModel, context, fitnessOptions)
+            TrackingActive(navController = navController, locationHandler, locationViewModel, accelometerViewModel, context, fitnessOptions, gymViewModel)
         }
         composable("LocationActivityDetails") {
             LocationResult(locationViewModel)
         }
-        composable("LiftDetails") {
-            LiftResult()
+        composable("LiftDetails" + "/{sportType}" + "/{reps}" + "/{weight}") { navBackStack ->
+            val sportType = navBackStack.arguments?.getString("sportType")
+            val reps = navBackStack.arguments?.getString("reps")
+            val weight = navBackStack.arguments?.getString("weight")
+            LiftResult(sportType ?: "", weight ?: "", reps ?: "", locationViewModel)
         }
     }
 }

@@ -11,29 +11,31 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.mikephil.charting.data.Entry
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.components.RPEBar
+import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
+
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
 
 @Composable
-fun LiftResult(sportType: String, weight: String, reps: String, locationViewModel: LocationViewModel) {
+fun LiftResult(sportType: String, weight: String, reps: String, locationViewModel: LocationViewModel, accelerometerViewModel: AccelerometerViewModel) {
 
     var current = locationViewModel.currentActivityId.observeAsState()
 
     Log.d("true", "${current.value.toString()} , ${locationViewModel.weight.value} , ${locationViewModel.reps.value}, ${locationViewModel.selected.value}")
 
+
     val lineEntry = ArrayList<Entry>()
-    lineEntry.add(Entry(0f, 0F))
-    lineEntry.add(Entry(1f, 0F))
-    lineEntry.add(Entry(2f, 1F))
-    lineEntry.add(Entry(3f, 0F))
-    lineEntry.add(Entry(4f, 0F))
-    lineEntry.add(Entry(5f, 0F))
-    lineEntry.add(Entry(6f, -4F))
+    accelerometerViewModel.acceleration.forEachIndexed{index, element ->
+        lineEntry.add(Entry(index.toFloat(), element))
+    }
+
+//    Log.d("acc, x",accelerometerViewModel.accelerationX[0].toString() )
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = Modifier
@@ -45,7 +47,7 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RPEBar("8")
+            RPEBar(null, true)
         }
         Text("Lift details - $sportType", style = MaterialTheme.typography.body1)
         Row(
@@ -65,7 +67,7 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
         ) {
             PlotChart(lineEntry, "Description for chart")
             Spacer(modifier = Modifier.padding(16.dp))
-            PlotChart(lineEntry, "Description for chart")
+
         }
     }
 }

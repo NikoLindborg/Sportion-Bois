@@ -28,10 +28,10 @@ fun NavigationGraph(
     navController: NavHostController,
     locationHandler: LocationHandler,
     locationViewModel: LocationViewModel,
+    accelerometerViewModel: AccelerometerViewModel,
     context: Context,
     activity: Activity,
     fitnessOptions: FitnessOptions,
-    accelometerViewModel: AccelerometerViewModel,
     gymViewModel: GymViewModel,
     userViewModel: UserViewModel
 ) {
@@ -46,7 +46,7 @@ fun NavigationGraph(
             Settings(name = "Settings", context, activity)
         }
         composable("TrackingActive") {
-            TrackingActive(navController = navController, locationHandler, locationViewModel, accelometerViewModel, context, fitnessOptions, gymViewModel)
+            TrackingActive(navController = navController, locationHandler, locationViewModel, accelerometerViewModel, context, fitnessOptions, gymViewModel)
         }
         composable("LocationActivityDetails") {
             LocationResult(locationViewModel)
@@ -55,7 +55,7 @@ fun NavigationGraph(
             val sportType = navBackStack.arguments?.getString("sportType")
             val reps = navBackStack.arguments?.getString("reps")
             val weight = navBackStack.arguments?.getString("weight")
-            LiftResult(sportType ?: "", weight ?: "", reps ?: "", locationViewModel)
+            LiftResult(sportType ?: "", weight ?: "", reps ?: "", locationViewModel, accelerometerViewModel)
         }
     }
 }

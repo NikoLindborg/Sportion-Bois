@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
         locationViewModel = LocationViewModel(application)
         gymViewModel = GymViewModel(application)
         userViewModel = UserViewModel(application)
-
         accelerometerViewModel = AccelerometerViewModel(application)
 
         ActivityCompat.requestPermissions(
@@ -119,10 +118,10 @@ fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationView
                 navController,
                 locationHandler,
                 locationViewModel,
+                accelerometerViewModel,
                 context,
                 activity,
                 fitnessOptions,
-                accelerometerViewModel,
                 gymViewModel,
                 userViewModel
             )

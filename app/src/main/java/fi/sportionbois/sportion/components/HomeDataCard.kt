@@ -73,7 +73,7 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                 horizontalArrangement = Arrangement.Center){
                 if(activity.sportType == "Squat" || activity.sportType == "Deadlift") {
                     if (gymData != null) {
-                        RPEBar(gymData.rpe.toString())
+                        RPEBar(gymData.rpe.toString(), null)
                     }
                 }
                 if(activity.sportType == "Biking") {

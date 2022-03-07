@@ -3,6 +3,7 @@ package fi.sportionbois.sportion.composables
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,8 +30,13 @@ data class LonLat(val lat: Float, val lon: Float)
 fun LocationResult(locationViewModel: LocationViewModel) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val locationData by locationViewModel.locationData.observeAsState()
-    val latestLocationActivityId = locationViewModel.getLatestLocationActivity("Biking").observeAsState()
-    val databaseDataPoints by locationViewModel.getDataPointsForId(latestLocationActivityId.value ?: 0).observeAsState()
+    val latestLocationActivityId =
+        locationViewModel.getLatestLocationActivity("Biking").observeAsState()
+    val databaseDataPoints by locationViewModel.getDataPointsForId(
+        latestLocationActivityId.value ?: 0
+    ).observeAsState()
+    val routeSpeed by locationViewModel.getLocationAvgSpeed(latestLocationActivityId.value ?: 0)
+        .observeAsState()
     val lineEntrySpeed = ArrayList<Entry>()
     val lineEntryAltitude = ArrayList<Entry>()
     val geoPoints = mutableListOf<LonLat>()
@@ -57,7 +63,11 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                 Text(text = "No map data available", color = MaterialTheme.colors.onBackground)
             }
         }
-        Text("Bike details", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onBackground)
+        Text(
+            "Bike details",
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -65,6 +75,7 @@ fun LocationResult(locationViewModel: LocationViewModel) {
         ) {
             //DetailComponent(firstValue = "%.1f".format(databaseData?.totalDistance), secondValue = "distance")
             DetailComponent(firstValue = "%.1f".format(value), secondValue = "distance")
+            DetailComponent(firstValue = "%.1f".format(routeSpeed), secondValue = "avg speed")
         }
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -82,21 +93,14 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                     Spacer(modifier = Modifier.padding(16.dp))
                     PlotChart(lineEntryAltitude, "Description for chart")
                 } else {
-                    Text(text = "No graph data available", color = MaterialTheme.colors.onBackground)
+                    Text(
+                        text = "No graph data available",
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
 
             }
         }
-        Column() {
-            databaseDataPoints?.forEach {
-                Row {
-                    Text(text = it.lat.toString())
-                    Text(text = it.lon.toString())
-                    Text(text = it.speed.toString())
-                    Text(text = "Distance ${it.totalDistance}")
-                }
-                Spacer(modifier = Modifier.padding(20.dp))
-            }
-        }
+        Spacer(modifier = Modifier.padding(20.dp))
     }
 }

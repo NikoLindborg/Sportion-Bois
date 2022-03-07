@@ -19,6 +19,7 @@ import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
+import fi.sportionbois.sportion.viewmodels.UserViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterialApi
@@ -31,14 +32,15 @@ fun NavigationGraph(
     activity: Activity,
     fitnessOptions: FitnessOptions,
     accelometerViewModel: AccelerometerViewModel,
-    gymViewModel: GymViewModel
+    gymViewModel: GymViewModel,
+    userViewModel: UserViewModel
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
             Home(navController = navController, locationViewModel, gymViewModel)
         }
         composable(BottomNavItem.StartTracking.screen_route) {
-            StartTracking(navController = navController, locationHandler, locationViewModel, gymViewModel)
+            StartTracking(navController = navController, locationHandler, locationViewModel, gymViewModel, userViewModel)
         }
         composable(BottomNavItem.Settings.screen_route) {
             Settings(name = "Settings", context, activity)

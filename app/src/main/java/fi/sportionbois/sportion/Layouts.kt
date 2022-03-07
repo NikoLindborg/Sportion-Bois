@@ -18,7 +18,10 @@ import fi.sportionbois.sportion.ui.theme.SportionTheme
 fun RoundButtonPrev() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            ButtonCHViolet(text = "START") {
+            ButtonCHViolet(text = "START", false) {
+
+            }
+            ButtonCHViolet(text = "START", false) {
 
             }
         }
@@ -28,6 +31,7 @@ fun RoundButtonPrev() {
 @Composable
 fun ButtonCHViolet(
     text: String,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -38,6 +42,7 @@ fun ButtonCHViolet(
             .width(325.dp),
         contentPadding = PaddingValues(0.dp, 0.dp),
         shape = RoundedCornerShape(10.dp),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier
@@ -56,7 +61,7 @@ fun ButtonCHViolet(
         ) {
             Text(
                 text = text,
-                color = Color.White,
+                color = if (isEnabled) {Color.White} else {Color.Gray},
                 style = MaterialTheme.typography.h1
             )
         }

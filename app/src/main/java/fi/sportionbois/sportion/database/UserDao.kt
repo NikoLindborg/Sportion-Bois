@@ -15,6 +15,9 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE user.username = :username")
     fun getUserLocationActivities(username: String): LiveData<User>
 
+    @Query("SELECT username FROM user ORDER BY username DESC LIMIT 1")
+    fun getInsertedUser(): LiveData<String>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(user: User): Long
 }

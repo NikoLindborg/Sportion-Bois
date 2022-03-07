@@ -14,6 +14,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     //  For possible future use
     fun getAll(): LiveData<List<User>> = activityDB.userDao().getAll()
 
+    //  Gets the only username in Room
+    fun getInsertedUser(): LiveData<String> = activityDB.userDao().getInsertedUser()
+
     //  Inserts a user to database
     fun insert(user: User) {
         viewModelScope.launch {

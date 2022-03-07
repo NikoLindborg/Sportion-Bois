@@ -57,7 +57,7 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
                 for (location in p0.locations) {
                     Log.d(
                         "GEOLOCATION",
-                        "new location latitude: ${location.latitude} and longitude: ${location.longitude}, actid ${locationViewModel.currentActivityId.value}"
+                        "new location latitude: ${location.latitude} and longitude: ${location.longitude}, actid ${locationViewModel.currentActivityId.value}, speed ${location.speed}"
                     )
                 }
             }

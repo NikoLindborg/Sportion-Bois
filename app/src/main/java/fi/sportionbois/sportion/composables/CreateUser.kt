@@ -16,6 +16,7 @@ fun CreateUser(userViewModel: UserViewModel) {
         var username by remember { mutableStateOf("") }
         var fname by remember { mutableStateOf("") }
         var lname by remember { mutableStateOf("") }
+        var isEnabled by remember { mutableStateOf(false) }
         Column {
             TextField(value = username, label = {
                 Text("Username")
@@ -29,7 +30,8 @@ fun CreateUser(userViewModel: UserViewModel) {
                 Text("Last name")
             },
                 onValueChange = { lname = it })
-            ButtonCHViolet(text = "Insert user", onClick = {
+            if (username != "" && fname != "" && lname != "") { isEnabled = true }
+            ButtonCHViolet(text = "Insert user", isEnabled, onClick = {
                 userViewModel.insert(User(username, fname, lname))
             })
         }

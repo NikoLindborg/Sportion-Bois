@@ -37,7 +37,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     private var allData: LiveData<List<SportActivity>>
     private val sportAcivityRepository: SportActivityRepository
 
-    init{
+    init {
         val saDB = ActivityDB.get(application).sportActivityDao()
         sportAcivityRepository = SportActivityRepository(saDB)
         allData = sportAcivityRepository.getAllData()
@@ -54,6 +54,9 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     //  Returns LocationDataPoints for the given LocationActivity
     fun getDataPointsForId(activityId: Int): LiveData<MutableList<LocationDataPoint>> =
         activityDB.locationDataPointDao().getLocationDataPointsForId(activityId = activityId)
+
+    fun getLocationAvgSpeed(activityId: Int): LiveData<Float> =
+        activityDB.locationDataPointDao().getLocationAvgSpeed(activityId)
 
     //  Insert LocationActivity with username and activityId information
     fun insert(sportActivity: SportActivity) {
@@ -82,7 +85,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     }
 
     //Insert endtime into activity
-    fun insertEndTime(activityId: Int, endTime: Long){
+    fun insertEndTime(activityId: Int, endTime: Long) {
         viewModelScope.launch {
             activityDB.sportActivityDao().insertEndTime(activityId, endTime)
         }

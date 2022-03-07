@@ -64,6 +64,7 @@ fun TrackingActive(
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(
             text = "STOP TRACKING",
+            true,
             onClick = {
                 locationHandler.stopLocationTracking()
                 if(locationViewModel.sportType.value === "Biking"){

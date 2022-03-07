@@ -65,7 +65,6 @@ class MainActivity : ComponentActivity() {
         userViewModel = UserViewModel(application)
 
         accelerometerViewModel = AccelerometerViewModel(application)
-        //userViewModel.insert(User("Koistine", "Juha", "Koistinen"))
 
         ActivityCompat.requestPermissions(
             this,
@@ -95,7 +94,8 @@ class MainActivity : ComponentActivity() {
                             this,
                             fitnessOptions,
                             accelerometerViewModel,
-                            gymViewModel
+                            gymViewModel,
+                            userViewModel
                         )
                     }
                 }
@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationViewModel, context: Context, activity: Activity,
-               fitnessOptions: FitnessOptions, accelerometerViewModel: AccelerometerViewModel, gymViewModel: GymViewModel) {
+               fitnessOptions: FitnessOptions, accelerometerViewModel: AccelerometerViewModel, gymViewModel: GymViewModel, userViewModel: UserViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
@@ -123,7 +123,8 @@ fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationView
                 activity,
                 fitnessOptions,
                 accelerometerViewModel,
-                gymViewModel
+                gymViewModel,
+                userViewModel
             )
         }
     }

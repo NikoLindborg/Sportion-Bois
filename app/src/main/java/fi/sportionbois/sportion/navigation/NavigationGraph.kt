@@ -48,8 +48,9 @@ fun NavigationGraph(
         composable("TrackingActive") {
             TrackingActive(navController = navController, locationHandler, locationViewModel, accelerometerViewModel, context, fitnessOptions, gymViewModel)
         }
-        composable("LocationActivityDetails") {
-            LocationResult(locationViewModel)
+        composable("LocationActivityDetails" + "/{activityId}") { navBackStack ->
+            val activityId = navBackStack.arguments?.getString("activityId")
+            LocationResult(locationViewModel, activityId ?: "")
         }
         composable("LiftDetails" + "/{sportType}" + "/{reps}" + "/{weight}") { navBackStack ->
             val sportType = navBackStack.arguments?.getString("sportType")

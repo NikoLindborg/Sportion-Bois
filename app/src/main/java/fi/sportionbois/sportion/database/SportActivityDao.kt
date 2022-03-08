@@ -7,7 +7,7 @@ import fi.sportionbois.sportion.entities.SportActivity
 
 @Dao
 interface SportActivityDao {
-    @Query("SELECT * FROM sportactivity ORDER BY activityId ASC")
+    @Query("SELECT * FROM sportactivity ORDER BY activityId DESC")
     fun getAll(): LiveData<List<SportActivity>>
 
     @Query("SELECT * FROM sportactivity WHERE sportactivity.user = :username")

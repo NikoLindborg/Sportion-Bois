@@ -58,9 +58,7 @@ fun TrackingActive(
     val reps = gymViewModel.reps.observeAsState()
     val weight = gymViewModel.weight.observeAsState()
 
-
     CenteredColumnMaxWidthAndHeight {
-        RPEBar(rpeValue = "%.1f".format(value), null)
         if (locationViewModel.sportType.value === "Biking") {
             ProgressValue(value = "%.1f".format(value) + " m")
         } else {
@@ -73,7 +71,7 @@ fun TrackingActive(
             onClick = {
                 locationHandler.stopLocationTracking()
                 if(locationViewModel.sportType.value === "Biking"){
-                    navController.navigate("LocationActivityDetails") {
+                    navController.navigate("LocationActivityDetails" + "/${currentId.value.toString()}") {
                         popUpTo("TrackingActive") {
                             inclusive = true
                         }

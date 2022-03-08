@@ -102,7 +102,7 @@ fun StartTracking(
                     Spacer(modifier = Modifier.padding(20.dp))
                 }
             }
-            ButtonCHViolet(text = "START", isSelected.value ?: false, onClick = {
+            ButtonCHViolet(text = "START", isSelected.value ?: false,  onClick = {
                 currentTime = 4000
                 isTimerRunning = true
             })

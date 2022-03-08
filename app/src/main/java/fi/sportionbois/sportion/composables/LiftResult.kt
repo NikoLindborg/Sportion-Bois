@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,18 +20,26 @@ import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
+import androidx.compose.runtime.livedata.observeAsState
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
 
 @Composable
-fun LiftResult(sportType: String, weight: String, reps: String, locationViewModel: LocationViewModel, accelerometerViewModel: AccelerometerViewModel) {
+fun LiftResult(
+    sportType: String,
+    weight: String,
+    reps: String,
+    locationViewModel: LocationViewModel,
+    accelerometerViewModel: AccelerometerViewModel
+) {
 
     val lineEntry = ArrayList<Entry>()
-    accelerometerViewModel.acceleration.forEachIndexed{index, element ->
+    accelerometerViewModel.acceleration.forEachIndexed { index, element ->
         lineEntry.add(Entry(index.toFloat(), element))
     }
-//    Log.d("acc, x",accelerometerViewModel.accelerationX[0].toString() )
+    var rpeValue by remember { mutableStateOf(0) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = Modifier
@@ -41,7 +51,17 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RPEBar(null, true)
+            RPEBar(rpeValue.toString())
+            TextField(
+                value = rpeValue.toString(),
+                onValueChange = { rpeValue = it.toInt() },
+                textStyle = MaterialTheme.typography.subtitle1,
+                label = { Text("Set RPE")},
+                modifier= Modifier.padding(32.dp, 32.dp)
+            )
+            Button(onClick = { /*TODO save data to room*/ }) {
+                Text(text = "Save")
+            }
         }
         Text("Lift details - $sportType", style = MaterialTheme.typography.body1)
         Row(

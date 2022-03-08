@@ -20,9 +20,9 @@ import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 
 @Composable
-fun RPEBar(rpeValue: String) {
+fun RPEBar(rpeValue: String?, input: Boolean?) {
     val (expanded, setExpanded) =  remember { mutableStateOf(false) }
-
+    var text by remember { mutableStateOf("Set RPE")}
     OutlinedButton(
         onClick = { setExpanded(true)},
         shape = CircleShape,
@@ -39,11 +39,24 @@ fun RPEBar(rpeValue: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(rpeValue, style = MaterialTheme.typography.h1)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("RPE", style = MaterialTheme.typography.subtitle1)
-            Spacer(modifier = Modifier.height(14.dp))
-            Icon(Icons.Filled.Info, contentDescription = "Info Icon")
+            if(rpeValue != null){
+                Text(rpeValue, style = MaterialTheme.typography.h1)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text("RPE", style = MaterialTheme.typography.subtitle1)
+                Spacer(modifier = Modifier.height(14.dp))
+                Icon(Icons.Filled.Info, contentDescription = "Info Icon")
+            } else if(input != null){
+                TextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    textStyle = MaterialTheme.typography.h1
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text("RPE", style = MaterialTheme.typography.subtitle1)
+                Spacer(modifier = Modifier.height(14.dp))
+                Icon(Icons.Filled.Info, contentDescription = "Info Icon")
+            }
+
         }
         ShowRPEInfo(expanded = expanded, setExpanded = setExpanded)
 
@@ -85,7 +98,7 @@ fun ShowRPEInfo(expanded: Boolean, setExpanded: (Boolean) -> Unit) {
 fun RPEBarPreview() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            RPEBar(rpeValue = "1.2")
+            RPEBar(rpeValue = "1.2", null)
         }
     }
 }

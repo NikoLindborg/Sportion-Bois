@@ -42,13 +42,12 @@ fun TrackingActive(
     navController: NavController,
     locationHandler: LocationHandler,
     locationViewModel: LocationViewModel,
-    accelerometerViewModel: AccelerometerViewModel = viewModel(),
+    accelerometerViewModel: AccelerometerViewModel,
     context: Context,
     fitnessOptions: FitnessOptions,
     gymViewModel: GymViewModel
     ) {
     val value by locationViewModel.travelledDistance.observeAsState()
-    val acc = accelerometerViewModel.acceleration.observeAsState()
     val activityId = locationViewModel.getLatestActivityId().observeAsState()
     Log.d("trueai", activityId.value.toString())
     locationViewModel.updateCurrentActivityId(activityId.value ?: 0)
@@ -57,10 +56,10 @@ fun TrackingActive(
     val sportType = locationViewModel.sportType.observeAsState()
     val reps = gymViewModel.reps.observeAsState()
     val weight = gymViewModel.weight.observeAsState()
-    //Log.d("acc", acc.value.toString())
+
 
     CenteredColumnMaxWidthAndHeight {
-        RPEBar(rpeValue = "%.1f".format(value))
+        RPEBar(rpeValue = "%.1f".format(value), null)
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(
             text = "STOP TRACKING",
@@ -81,9 +80,7 @@ fun TrackingActive(
                         )
                         gymViewModel.selected.value = false
                 }
-
                 accelerometerViewModel.stopListening()
-
                 //Insert end time to activity
                 val endTime = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC)
                 locationViewModel.insertEndTime(currentId.value ?: 0, endTime)

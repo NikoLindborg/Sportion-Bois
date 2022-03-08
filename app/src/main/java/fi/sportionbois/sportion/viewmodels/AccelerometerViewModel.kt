@@ -10,15 +10,16 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import java.lang.Math.sqrt
 
 
 class AccelerometerViewModel(application: Application) : AndroidViewModel(application) {
     private val accelerometerLiveData = AccelerometerLiveData()
-    val acceleration = Transformations.map(accelerometerLiveData) {
-        it[0].let { _ ->
-            String.format("x ${it[0]} y ${it[1]} z ${it[2]}")
-        }
-    }
+    val acceleration = mutableListOf<Float>()
+    val accelerationX = mutableListOf<Float>()
+    val accelerationY = mutableListOf<Float>()
+    val accelerationZ = mutableListOf<Float>()
+
 
     fun listen() {
         accelerometerLiveData.activate()
@@ -32,7 +33,7 @@ class AccelerometerViewModel(application: Application) : AndroidViewModel(applic
         private val sensorManager =
             getApplication<Application>().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         private val accelerometer =
-            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 
         override fun onActive() {
             sensorManager.unregisterListener(this)
@@ -44,6 +45,7 @@ class AccelerometerViewModel(application: Application) : AndroidViewModel(applic
 
         fun pause() {
             sensorManager.unregisterListener(this)
+            Log.d("acc x", accelerationX.toString())
         }
 
         override fun onInactive() {
@@ -55,6 +57,10 @@ class AccelerometerViewModel(application: Application) : AndroidViewModel(applic
             p0.let {
                 if (it != null) {
                     value = it.values
+                    acceleration.add(sqrt((it.values[0] * it.values[0] + it.values[1] * it.values[1] + it.values[2] * it.values[2]).toDouble()).toFloat())
+                    accelerationX.add(it.values[0])
+                    accelerationY.add(it.values[1])
+                    accelerationZ.add(it.values[2])
                 }
             }
         }

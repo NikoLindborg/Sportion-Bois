@@ -58,6 +58,12 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
             DetailComponent(firstValue = "0.23", secondValue = "Speed")
             DetailComponent(firstValue = weight, secondValue = "Weight")
             DetailComponent(firstValue = reps, secondValue = "Reps")
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             DetailComponent(firstValue = "21", secondValue = "Repes")
         }
         Column(
@@ -65,9 +71,8 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            PlotChart(lineEntry, "Description for chart")
+            PlotChart(lineEntry, "Description for chart", "", "", "")
             Spacer(modifier = Modifier.padding(16.dp))
-
         }
     }
 }

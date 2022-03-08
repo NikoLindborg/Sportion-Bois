@@ -30,7 +30,6 @@ import fi.sportionbois.sportion.entities.User
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.navigation.BottomNavigationBar
 import fi.sportionbois.sportion.navigation.NavigationGraph
-import fi.sportionbois.sportion.navigation.TopBar
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 import java.time.LocalDate
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
@@ -110,7 +109,6 @@ fun MainScreen(locationHandler: LocationHandler, locationViewModel: LocationView
                fitnessOptions: FitnessOptions, accelerometerViewModel: AccelerometerViewModel, gymViewModel: GymViewModel, userViewModel: UserViewModel) {
     val navController = rememberNavController()
     Scaffold(
-        topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         CenteredColumnMaxWidthAndHeight {

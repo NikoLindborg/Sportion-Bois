@@ -24,7 +24,13 @@ import java.util.ArrayList
 import fi.sportionbois.sportion.R
 
 @Composable
-fun PlotChart(values: ArrayList<Entry>, description: String) {
+fun PlotChart(
+    values: ArrayList<Entry>,
+    title: String,
+    graphYAxis: String,
+    graphXAxis: String,
+    description: String
+) {
     Card(
         shape = RoundedCornerShape(10.dp), modifier = Modifier
             .fillMaxWidth()
@@ -40,7 +46,7 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "RPE over last 7 days", color = MaterialTheme.colors.onBackground)
+                Text(text = title, color = MaterialTheme.colors.onBackground)
             }
             Row(
                 modifier = Modifier
@@ -48,7 +54,11 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(start = 20.dp, end = 20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "RPE", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onBackground)
+                Text(
+                    text = graphYAxis,
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onBackground
+                )
             }
             AndroidView(
                 modifier = Modifier
@@ -100,7 +110,11 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(start = 20.dp, end = 20.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(text = "days", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onBackground)
+                Text(
+                    text = graphXAxis,
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onBackground
+                )
             }
             Row(
                 modifier = Modifier
@@ -108,7 +122,10 @@ fun PlotChart(values: ArrayList<Entry>, description: String) {
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", color = MaterialTheme.colors.onBackground)
+                Text(
+                    text = description,
+                    color = MaterialTheme.colors.onBackground
+                )
             }
         }
     }

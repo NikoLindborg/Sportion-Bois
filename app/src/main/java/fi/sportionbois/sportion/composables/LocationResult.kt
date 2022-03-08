@@ -14,8 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.mikephil.charting.data.Entry
+import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
@@ -23,6 +25,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.ArrayList
+
 
 data class LonLat(val lat: Float, val lon: Float)
 
@@ -73,8 +76,7 @@ fun LocationResult(locationViewModel: LocationViewModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            //DetailComponent(firstValue = "%.1f".format(databaseData?.totalDistance), secondValue = "distance")
-            DetailComponent(firstValue = "%.1f".format(value), secondValue = "distance")
+            DetailComponent(firstValue = ("%.1f".format(value?.times(0.001))), secondValue = "distance")
             DetailComponent(firstValue = "%.1f".format(routeSpeed), secondValue = "avg speed")
         }
         Column(
@@ -89,9 +91,16 @@ fun LocationResult(locationViewModel: LocationViewModel) {
                     lineEntryAltitude.add(Entry(index.toFloat(), element.totalDistance))
                 }
                 if (lineEntrySpeed.count() > 0) {
-                    PlotChart(lineEntrySpeed, "Description for chart")
+                    PlotChart(lineEntrySpeed,
+                        stringResource(id = R.string.route_speed),
+                        stringResource(id = R.string.m_s),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.route_description))
                     Spacer(modifier = Modifier.padding(16.dp))
-                    PlotChart(lineEntryAltitude, "Description for chart")
+                    PlotChart(lineEntryAltitude, stringResource(id = R.string.route_altitude),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.altitude_description))
                 } else {
                     Text(
                         text = "No graph data available",

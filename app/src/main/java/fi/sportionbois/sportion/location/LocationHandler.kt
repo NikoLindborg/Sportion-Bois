@@ -28,14 +28,7 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) ==
             PackageManager.PERMISSION_GRANTED
-        ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                Log.d(
-                    "GEOLOCATION",
-                    "last location latitude: ${it?.latitude} and longitude: ${it?.longitude}"
-                )
-            }
-        }
+        )
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 if (previousLocation != null) {
@@ -53,13 +46,6 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
                     )
                 }
                 previousLocation = p0.lastLocation
-                Log.d("PREVLOC", totalDistance.toString())
-                for (location in p0.locations) {
-                    Log.d(
-                        "GEOLOCATION",
-                        "new location latitude: ${location.latitude} and longitude: ${location.longitude}, actid ${locationViewModel.currentActivityId.value}, speed ${location.speed}"
-                    )
-                }
             }
         }
     }

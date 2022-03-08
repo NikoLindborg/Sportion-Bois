@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.android.gms.fitness.FitnessOptions
+import fi.sportionbois.sportion.components.ProgressValue
 import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
@@ -60,6 +61,11 @@ fun TrackingActive(
 
     CenteredColumnMaxWidthAndHeight {
         RPEBar(rpeValue = "%.1f".format(value), null)
+        if (locationViewModel.sportType.value === "Biking") {
+            ProgressValue(value = "%.1f".format(value) + " m")
+        } else {
+            RPEBar(rpeValue = "%.1f".format(value), null)
+        }
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(
             text = "STOP TRACKING",
@@ -67,10 +73,18 @@ fun TrackingActive(
             onClick = {
                 locationHandler.stopLocationTracking()
                 if(locationViewModel.sportType.value === "Biking"){
-                    navController.navigate("LocationActivityDetails")
+                    navController.navigate("LocationActivityDetails") {
+                        popUpTo("TrackingActive") {
+                            inclusive = true
+                        }
+                    }
                 } else {
                     navController.navigate("LiftDetails" + "/${sportType.value.toString()}"
-                            + "/${reps.value.toString()}" + "/${weight.value.toString()}")
+                            + "/${reps.value.toString()}" + "/${weight.value.toString()}") {
+                        popUpTo("TrackingActive") {
+                            inclusive = true
+                        }
+                    }
                 }
 
                 if(currentId.value != null){

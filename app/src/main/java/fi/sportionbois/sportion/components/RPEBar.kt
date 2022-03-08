@@ -20,11 +20,10 @@ import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 
 @Composable
-fun RPEBar(rpeValue: String?, input: Boolean?) {
-    val (expanded, setExpanded) =  remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("Set RPE")}
+fun RPEBar(rpeValue: String) {
+    val (expanded, setExpanded) = remember { mutableStateOf(false) }
     OutlinedButton(
-        onClick = { setExpanded(true)},
+        onClick = { setExpanded(true) },
         shape = CircleShape,
         modifier = Modifier
             .size(120.dp)
@@ -39,23 +38,12 @@ fun RPEBar(rpeValue: String?, input: Boolean?) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if(rpeValue != null){
-                Text(rpeValue, style = MaterialTheme.typography.h1)
-                Spacer(modifier = Modifier.height(4.dp))
-                Text("RPE", style = MaterialTheme.typography.subtitle1)
-                Spacer(modifier = Modifier.height(14.dp))
-                Icon(Icons.Filled.Info, contentDescription = "Info Icon")
-            } else if(input != null){
-                TextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    textStyle = MaterialTheme.typography.h1
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text("RPE", style = MaterialTheme.typography.subtitle1)
-                Spacer(modifier = Modifier.height(14.dp))
-                Icon(Icons.Filled.Info, contentDescription = "Info Icon")
-            }
+
+            Text(rpeValue, style = MaterialTheme.typography.h1)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text("RPE", style = MaterialTheme.typography.subtitle1)
+            Spacer(modifier = Modifier.height(14.dp))
+            Icon(Icons.Filled.Info, contentDescription = "Info Icon")
 
         }
         ShowRPEInfo(expanded = expanded, setExpanded = setExpanded)
@@ -84,10 +72,12 @@ fun ShowRPEInfo(expanded: Boolean, setExpanded: (Boolean) -> Unit) {
                 }
             },
             text = {
-                Text("RPE stands for Rate of Perceived Exertion, and is tool to measure the intensity of any set in your training subjectively.\n\n" +
-                        "RPE gives a concrete way to measure intensity. The RPE scale is a scale of 1 to 10, with 10 being maximal effort.\n\n" +
-                        "For example, if you are programmed a top set of 5 @ RPE7, that means after completing the fifth rep on the top set, " +
-                        "you could have completed three more reps if you had to.")
+                Text(
+                    "RPE stands for Rate of Perceived Exertion, and is tool to measure the intensity of any set in your training subjectively.\n\n" +
+                            "RPE gives a concrete way to measure intensity. The RPE scale is a scale of 1 to 10, with 10 being maximal effort.\n\n" +
+                            "For example, if you are programmed a top set of 5 @ RPE7, that means after completing the fifth rep on the top set, " +
+                            "you could have completed three more reps if you had to."
+                )
             },
         )
     }
@@ -98,7 +88,7 @@ fun ShowRPEInfo(expanded: Boolean, setExpanded: (Boolean) -> Unit) {
 fun RPEBarPreview() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            RPEBar(rpeValue = "1.2", null)
+            RPEBar(rpeValue = "1.2")
         }
     }
 }

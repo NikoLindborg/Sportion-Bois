@@ -62,7 +62,7 @@ fun TrackingActive(
         if (locationViewModel.sportType.value === "Biking") {
             ProgressValue(value = "%.1f".format(value) + " m")
         } else {
-            RPEBar(rpeValue = "%.1f".format(value), null)
+            RPEBar(rpeValue = "%.1f".format(value))
         }
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(

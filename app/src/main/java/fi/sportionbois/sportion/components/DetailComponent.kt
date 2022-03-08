@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,11 +20,13 @@ fun DetailComponent(firstValue: String, secondValue: String) {
     Surface(
         elevation = 1.dp,
         modifier = Modifier
+            .height(90.dp)
+            .width(90.dp)
             .background(color = MaterialTheme.colors.background)
             .width(IntrinsicSize.Min)
             .border(
                 BorderStroke(1.dp, MaterialTheme.colors.onBackground),
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(20.dp)
             )
 
     ) {
@@ -40,4 +43,10 @@ fun DetailComponent(firstValue: String, secondValue: String) {
         }
     }
 
+}
+
+@Preview
+@Composable
+fun DefPrev() {
+    DetailComponent(firstValue = "0.3", secondValue = "distance")
 }

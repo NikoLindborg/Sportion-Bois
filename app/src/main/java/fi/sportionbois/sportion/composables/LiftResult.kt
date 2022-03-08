@@ -25,16 +25,10 @@ import java.util.ArrayList
 @Composable
 fun LiftResult(sportType: String, weight: String, reps: String, locationViewModel: LocationViewModel, accelerometerViewModel: AccelerometerViewModel) {
 
-    var current = locationViewModel.currentActivityId.observeAsState()
-
-    Log.d("true", "${current.value.toString()} , ${locationViewModel.weight.value} , ${locationViewModel.reps.value}, ${locationViewModel.selected.value}")
-
-
     val lineEntry = ArrayList<Entry>()
     accelerometerViewModel.acceleration.forEachIndexed{index, element ->
         lineEntry.add(Entry(index.toFloat(), element))
     }
-
 //    Log.d("acc, x",accelerometerViewModel.accelerationX[0].toString() )
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -55,16 +49,8 @@ fun LiftResult(sportType: String, weight: String, reps: String, locationViewMode
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            DetailComponent(firstValue = "0.23", secondValue = "Speed")
             DetailComponent(firstValue = weight, secondValue = "Weight")
             DetailComponent(firstValue = reps, secondValue = "Reps")
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            DetailComponent(firstValue = "21", secondValue = "Repes")
         }
         Column(
             modifier = Modifier.fillMaxWidth(),

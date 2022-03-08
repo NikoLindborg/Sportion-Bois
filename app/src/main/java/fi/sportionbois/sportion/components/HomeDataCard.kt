@@ -1,5 +1,8 @@
 package fi.sportionbois.sportion.components
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -23,19 +26,33 @@ import fi.sportionbois.sportion.composables.ShowMap
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.entities.SportActivity
+import java.lang.Math.round
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.concurrent.TimeUnit
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavController, databaseDataPoints: List<LocationDataPoint>?){
+fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavController,
+                 databaseDataPoints: List<LocationDataPoint>?, avgSpeed: Float?){
     val geoPoints = mutableListOf<LonLat>()
 
+    val duration = Duration.between(
+        LocalDateTime.ofInstant(Instant.ofEpochSecond(activity.startTime?: 0), ZoneOffset.UTC),
+        LocalDateTime.ofInstant(Instant.ofEpochSecond(activity.endTime?: 0), ZoneOffset.UTC)).toMinutes().toString()
+
+    Log.d("locationhomedata", activity.activityId.toString())
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .padding(16.dp)
-            .clickable { navController.navigate("LiftDetails" + "/${activity.sportType}"
-                    + "/${gymData?.reps}" + "/${gymData?.weight} ") }
+            .clickable { if(activity.sportType == "Squat" || activity.sportType == "Deadlift"){navController.navigate("LiftDetails" + "/${activity.sportType}"
+                    + "/${gymData?.reps}" + "/${gymData?.weight} ")} else if(activity.sportType == "Biking"){
+                navController.navigate("LocationActivityDetails" + "/${activity.activityId.toString()}")}  }
     ){
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -95,18 +112,9 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally){
                 Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                    .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly){
-                    Text(if(activity.sportType == "Biking"){""} else {"Weight"} , color = MaterialTheme.colors.onBackground)
-                    Text("Reps", color = MaterialTheme.colors.onBackground)
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly){
+                    horizontalArrangement = Arrangement.SpaceAround){
                     if(activity.sportType == "Squat" || activity.sportType == "Deadlift") {
                         if (gymData != null) {
                             Text(
@@ -118,6 +126,53 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                             Text(gymData.reps.toString(), color = MaterialTheme.colors.onBackground)
                         }
                     }
+                    if(activity.sportType == "Biking") {
+                        if (databaseDataPoints != null) {
+                            if(databaseDataPoints[databaseDataPoints.size - 1].totalDistance != null){
+                                Text(
+                                    "${String.format("%.2f", databaseDataPoints[databaseDataPoints.size - 1].totalDistance)} m",
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            } else {
+                                Text(
+                                    "distance not found",
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
+
+                            if(duration != null){
+                                Text(
+                                    "$duration min",
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            } else{
+                                Text(
+                                    "duration not found",
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
+
+
+                            if (avgSpeed != null) {
+                                Text(
+                                    "${String.format("%.2f", avgSpeed)} km/h",
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
+                        }
+
+                    }
+                }
+                Row(modifier = Modifier
+                    .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround){
+                    Text(if(activity.sportType == "Biking"){"distance"} else {"weight"} , color = MaterialTheme.colors.onBackground)
+                    Text(if(activity.sportType == "Biking"){"duration"} else {"reps"}, color = MaterialTheme.colors.onBackground)
+                    if(activity.sportType == "Biking"){
+                        Text("avg speed", color = MaterialTheme.colors.onBackground)
+                    }
+
                 }
                 //Text(data.info3, color = MaterialTheme.colors.onBackground)
             }

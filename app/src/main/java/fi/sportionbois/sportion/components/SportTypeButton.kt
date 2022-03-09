@@ -74,7 +74,7 @@ fun SportTypeButton(
 fun SportTypeCardPreview() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            SportTypeButton(text = "Biking")
+            SportTypeButton(text = "Outdoor activity")
         }
     }
 }

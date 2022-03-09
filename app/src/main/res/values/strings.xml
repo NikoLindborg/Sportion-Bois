@@ -5,8 +5,12 @@
     <string name="distance">Distance</string>
     <string name="m_s">m/s</string>
     <string name="m">m</string>
+    <string name="acceleration">Acceleration</string>
+    <string name="lift_title">Lift acceleration details</string>
+    <string name="time">Time</string>
     <string name="route_speed">Route speed</string>
     <string name="route_altitude">Route altitude</string>
     <string name="route_description">Speed over travelled distance</string>
     <string name="altitude_description">The altitude of the tracked route</string>
+    <string name="lift_description">Acceleration values of the lift between 0.2s to help with evaluating the RPE.</string>
 </resources>

@@ -68,7 +68,7 @@ fun StartTracking(
             }
             Log.d("CURTI", currentTime.toString())
             if (currentTime == 0L) {
-                if (sportType == "Biking") {
+                if (sportType == "Outdoor activity") {
                     locationHandler.startLocationTracking()
                 }
                 navController.navigate("TrackingActive")
@@ -90,9 +90,9 @@ fun StartTracking(
     }
 
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        val itemCount = gymViewModel.selectedItemCount.observeAsState(0)
         if (!isTimerRunning) {
-            //  Placeholder list for different sports
-            val listOfSports = listOf("Biking", "Squat", "Deadlift")
+            val listOfSports = listOf("Outdoor activity", "Squat", "Deadlift")
             LazyColumn {
                 items(listOfSports) {
                     SportTypeCardButton(
@@ -104,7 +104,7 @@ fun StartTracking(
                     Spacer(modifier = Modifier.padding(20.dp))
                 }
             }
-            ButtonCHViolet(text = "START", isSelected.value ?: false,  onClick = {
+            ButtonCHViolet(text = "START", isSelected.value ?: false && itemCount.value != 0 && itemCount.value <= 1,  onClick = {
                 currentTime = 4000
                 isTimerRunning = true
             })

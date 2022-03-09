@@ -29,7 +29,7 @@ fun Home(navController: NavController, locationViewModel: LocationViewModel, gym
                             HomeDataCard(activity, gymData, navController = navController, null, null)
                         }
                     }
-                    if(activity.sportType == "Biking") {
+                    if(activity.sportType == "Outdoor activity") {
                         val databaseDataPoints by locationViewModel.getDataPointsForId(activity.activityId).observeAsState()
                         val avgSpeed by locationViewModel.getLocationAvgSpeed(activity.activityId).observeAsState()
                         Log.d("home", avgSpeed.toString())

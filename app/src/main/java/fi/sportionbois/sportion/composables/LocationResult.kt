@@ -35,7 +35,8 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
     val lineEntryAltitude = ArrayList<Entry>()
     val geoPoints = mutableListOf<LonLat>()
 
-    val databaseDataPoints by locationViewModel.getDataPointsForId(activityId.toInt()).observeAsState()
+    val databaseDataPoints by locationViewModel.getDataPointsForId(activityId.toInt())
+        .observeAsState()
     val avgSpeed by locationViewModel.getLocationAvgSpeed(activityId.toInt()).observeAsState()
 
     Column(
@@ -67,51 +68,60 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (databaseDataPoints != null) {
-                     if (databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance != null) {
-                    DetailComponent(firstValue = ("%.2f".format(databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance?.times(0.001))), secondValue = "distance")
+                if (databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance != null) {
+                    DetailComponent(
+                        firstValue = ("%.2f".format(
+                            databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance?.times(
+                                0.001
+                            )
+                        )), secondValue = "distance"
+                    )
                 }
             }
-                DetailComponent(firstValue = "${String.format("%.2f", avgSpeed)} ", secondValue = "avg speed")
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                if (databaseDataPoints != null) {
-                    databaseDataPoints?.forEachIndexed { index, element ->
-                        lineEntrySpeed.add(Entry(index.toFloat(), element.speed))
-                        //  Using total distance for now, change to altitude once Room is updated
-                        lineEntryAltitude.add(Entry(index.toFloat(), element.totalDistance))
-                    }
-                    if (lineEntrySpeed.count() > 0) {
-                        PlotChart(
-                            lineEntrySpeed,
-                            stringResource(id = R.string.route_speed),
-                            stringResource(id = R.string.m_s),
-                            stringResource(id = R.string.m),
-                            stringResource(id = R.string.route_description)
-                        )
-                        Spacer(modifier = Modifier.padding(16.dp))
-                        PlotChart(
-                            lineEntryAltitude, stringResource(id = R.string.route_altitude),
-                            stringResource(id = R.string.m),
-                            stringResource(id = R.string.m),
-                            stringResource(id = R.string.altitude_description)
-                        )
-                    } else {
-                        Text(
-                            text = "No graph data available",
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-
-                }
-            }
-            Spacer(modifier = Modifier.padding(20.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
+            DetailComponent(
+                firstValue = "${String.format("%.2f", avgSpeed)} ",
+                secondValue = "avg speed"
+            )
         }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (databaseDataPoints != null) {
+                databaseDataPoints?.forEachIndexed { index, element ->
+                    lineEntrySpeed.add(Entry(index.toFloat(), element.speed))
+                    //  Using total distance for now, change to altitude once Room is updated
+                    lineEntryAltitude.add(Entry(index.toFloat(), element.totalDistance))
+                }
+                if (lineEntrySpeed.count() > 0) {
+                    PlotChart(
+                        lineEntrySpeed,
+                        stringResource(id = R.string.route_speed),
+                        stringResource(id = R.string.m_s),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.route_description)
+                    )
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    PlotChart(
+                        lineEntryAltitude, stringResource(id = R.string.route_altitude),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.m),
+                        stringResource(id = R.string.altitude_description)
+                    )
+                } else {
+                    Text(
+                        text = "No graph data available",
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+
+            }
+        }
+        Spacer(modifier = Modifier.padding(20.dp))
     }
+}

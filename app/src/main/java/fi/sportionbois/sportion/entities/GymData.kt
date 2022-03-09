@@ -16,7 +16,7 @@ data class GymData(
     val activity: Int,
     val weight: Long?,
     val reps: Long?,
-    val rpe: Long?,
+    val rpe: String?,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
 ) {

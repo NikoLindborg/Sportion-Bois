@@ -9,8 +9,12 @@ class GymDataRepository(private val gymDataDao: GymDataDao) {
     suspend fun insertGymData(gymData: GymData) =
         gymDataDao.insert(gymData)
 
+    fun updateRpe(rpe: String, activityId: Int) = gymDataDao.updateRpe(rpe, activityId)
+
     fun getDataById(id: Int) =
         gymDataDao.getGymDataById(id)
+
+    fun getRpe(activityId: Int) = gymDataDao.getRpe(activityId)
 
     fun getAllData(): LiveData<List<GymData>> = gymDataDao.getAllGymData()
 

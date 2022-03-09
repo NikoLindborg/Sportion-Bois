@@ -43,6 +43,16 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getRpe(activityId: Int): LiveData<String> =
+        gymDataRepository.getRpe(activityId)
+
+
+    fun updateRpe(rpe: String, activityId: Int) {
+        viewModelScope.launch (Dispatchers.IO){
+            gymDataRepository.updateRpe(rpe, activityId)
+        }
+    }
+
     //return all gym data
     fun getAllGymData(): LiveData<List<GymData>> =
         allGymData

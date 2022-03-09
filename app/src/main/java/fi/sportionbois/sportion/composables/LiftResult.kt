@@ -3,6 +3,7 @@ package fi.sportionbois.sportion.composables
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -21,7 +22,9 @@ import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.text.input.KeyboardType
 import fi.sportionbois.sportion.entities.GymData
+import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
 
@@ -31,15 +34,17 @@ fun LiftResult(
     weight: String,
     reps: String,
     locationViewModel: LocationViewModel,
-    accelerometerViewModel: AccelerometerViewModel
+    accelerometerViewModel: AccelerometerViewModel,
+    currentId: String,
+    gymViewModel: GymViewModel
 ) {
-
+    Log.d("CURID", currentId)
     val lineEntry = ArrayList<Entry>()
     accelerometerViewModel.acceleration.forEachIndexed { index, element ->
         lineEntry.add(Entry(index.toFloat(), element))
     }
-    var rpeValue by remember { mutableStateOf(0) }
-
+    var rpeValue by remember { mutableStateOf("") }
+    var databaseRpeValue = gymViewModel.getRpe(currentId.toInt()).observeAsState()
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = Modifier
@@ -51,15 +56,16 @@ fun LiftResult(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RPEBar(rpeValue.toString())
+            RPEBar(databaseRpeValue.value ?: "")
             TextField(
-                value = rpeValue.toString(),
-                onValueChange = { rpeValue = it.toInt() },
+                value = rpeValue,
+                onValueChange = { rpeValue = it },
                 textStyle = MaterialTheme.typography.subtitle1,
                 label = { Text("Set RPE")},
-                modifier= Modifier.padding(32.dp, 32.dp)
+                modifier= Modifier.padding(32.dp, 32.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
-            Button(onClick = { /*TODO save data to room*/ }) {
+            Button(onClick = { gymViewModel.updateRpe(rpeValue, currentId.toInt()) }) {
                 Text(text = "Save")
             }
         }

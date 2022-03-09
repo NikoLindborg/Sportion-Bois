@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -62,7 +63,7 @@ fun TrackingActive(
         if (locationViewModel.sportType.value === "Biking") {
             ProgressValue(value = "%.1f".format(value) + " m")
         } else {
-            RPEBar(rpeValue = "%.1f".format(value))
+            Text("Tracking", style = MaterialTheme.typography.h1)
         }
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(
@@ -78,7 +79,7 @@ fun TrackingActive(
                     }
                 } else {
                     navController.navigate("LiftDetails" + "/${sportType.value.toString()}"
-                            + "/${reps.value.toString()}" + "/${weight.value.toString()}") {
+                            + "/${reps.value.toString()}" + "/${weight.value.toString()}" + "/${currentId.value.toString()}" ) {
                         popUpTo("TrackingActive") {
                             inclusive = true
                         }
@@ -88,7 +89,7 @@ fun TrackingActive(
                 if(currentId.value != null){
                     Log.d("truein", currentId.value.toString())
                         gymViewModel.insertGymData(
-                            GymData(currentId.value ?: 0,weight.value,reps.value,0)
+                            GymData(currentId.value ?: 0,weight.value,reps.value,"")
                         )
                         gymViewModel.selected.value = false
                 }

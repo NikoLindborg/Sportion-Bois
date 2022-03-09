@@ -68,7 +68,9 @@ fun StartTracking(
             }
             Log.d("CURTI", currentTime.toString())
             if (currentTime == 0L) {
-                locationHandler.startLocationTracking()
+                if (sportType == "Biking") {
+                    locationHandler.startLocationTracking()
+                }
                 navController.navigate("TrackingActive")
                 //get start time in epoch seconds to get as accurate timestamp as possible
                 val startTime = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC)

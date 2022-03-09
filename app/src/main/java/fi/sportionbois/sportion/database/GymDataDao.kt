@@ -1,10 +1,7 @@
 package fi.sportionbois.sportion.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.LocationDataPoint
 
@@ -15,6 +12,12 @@ interface GymDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(gymData: GymData): Long
+
+    @Query("UPDATE gymdata SET rpe = :newRpe WHERE gymdata.activity = :activityId")
+    fun updateRpe(newRpe: String, activityId: Int)
+
+    @Query("SELECT rpe FROM gymdata WHERE gymdata.activity = :activityId")
+    fun getRpe(activityId: Int): LiveData<String>
 
     @Query("SELECT * FROM gymdata")
     fun getAllGymData(): LiveData<List<GymData>>

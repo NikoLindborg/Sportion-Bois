@@ -51,7 +51,7 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
         modifier = Modifier
             .padding(16.dp)
             .clickable { if(activity.sportType == "Squat" || activity.sportType == "Deadlift"){navController.navigate("LiftDetails" + "/${activity.sportType}"
-                    + "/${gymData?.reps}" + "/${gymData?.weight} ")} else if(activity.sportType == "Biking"){
+                    + "/${gymData?.reps}" + "/${gymData?.weight}" + "/${gymData?.weight}")} else if(activity.sportType == "Biking"){
                 navController.navigate("LocationActivityDetails" + "/${activity.activityId.toString()}")}  }
     ){
         Column(modifier = Modifier

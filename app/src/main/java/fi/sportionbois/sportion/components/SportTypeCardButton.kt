@@ -1,5 +1,6 @@
 package fi.sportionbois.sportion.components
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -30,22 +32,44 @@ fun SportTypeCardButton(
     locationViewModel: LocationViewModel,
     gymViewModel: GymViewModel
 ) {
-    var expandedState by remember { mutableStateOf(false)}
+    var expandedState by remember { mutableStateOf(false) }
     var repsInput by remember { mutableStateOf("") }
     var weightInput by remember { mutableStateOf("") }
+    var selectedCount = gymViewModel.selectedItemCount.observeAsState()
+    /*if (expandedState) {
+        selectedCount.value += 1
+        Log.d("SELECTEDCOUNT", selectedCount.value.toString())
+    } else {
+        selectedCount.value -= 1
+        Log.d("SELECTEDCOUNT", selectedCount.value.toString())
+    }*/
 
     Card(
         modifier = modifier
             .width(325.dp)
-                //need to correct colors on border
-            .then(if (expandedState && !locationViewModel.selected.value!!) modifier.border(BorderStroke(2.dp, MaterialTheme.colors.primaryVariant),  RoundedCornerShape(10.dp))
-            else modifier)
+            //need to correct colors on border
+            .then(
+                if (expandedState) modifier.border(
+                    BorderStroke(2.dp, MaterialTheme.colors.secondary),
+                    RoundedCornerShape(10.dp)
+                )
+                else modifier
+            )
             .animateContentSize(
                 animationSpec = tween(delayMillis = 300, easing = LinearOutSlowInEasing)
-            )
-        ,
+            ),
         shape = RoundedCornerShape(10.dp),
-        onClick = { expandedState = !expandedState }
+        onClick = {
+            if (!expandedState) {
+                gymViewModel.increaseItemCount(1)
+                Log.d("SELECTEDCOUNT", selectedCount.value.toString())
+                expandedState = !expandedState
+            } else {
+                gymViewModel.decreaseItemCount(1)
+                Log.d("SELECTEDCOUNT", selectedCount.value.toString())
+                expandedState = !expandedState
+            }
+        }
     ) {
         Box(
             modifier = Modifier
@@ -81,42 +105,47 @@ fun SportTypeCardButton(
                     tint = MaterialTheme.colors.onBackground
                 )
             }
-                if(expandedState){
-                    locationViewModel.selected.value = true
-                    if(text != "Biking") {
-                        Row(
-                            modifier = Modifier.padding(top = 64.dp).fillMaxWidth()
-                                .padding(horizontal = 32.dp)
-                        ) {
-                            TextField(value = repsInput,
-                                onValueChange = { repsInput = it },
-                                label = { Text("Reps") },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.padding(top = 128.dp, bottom = 32.dp).fillMaxWidth()
-                                .padding(horizontal = 32.dp)
-                        ) {
-                            TextField(value = weightInput,
-                                onValueChange = { weightInput = it },
-                                label = { Text("Weight") },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                            )
-                        }
-                        if (repsInput != "" && weightInput != "") {
-                            gymViewModel.reps.value = repsInput.toLong()
-                            gymViewModel.weight.value = weightInput.toLong()
-                            locationViewModel.sportType.value = text
-                        }
-                    } else if(text === "Biking" && locationViewModel.selected.value!!) {
+            if (expandedState) {
+                locationViewModel.selected.value = true
+                if (text != "Outdoor activity") {
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 64.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                    ) {
+                        TextField(
+                            value = repsInput,
+                            onValueChange = { repsInput = it },
+                            label = { Text("Reps") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 128.dp, bottom = 32.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                    ) {
+                        TextField(
+                            value = weightInput,
+                            onValueChange = { weightInput = it },
+                            label = { Text("Weight") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                    }
+                    if (repsInput != "" && weightInput != "") {
+                        gymViewModel.reps.value = repsInput.toLong()
+                        gymViewModel.weight.value = weightInput.toLong()
                         locationViewModel.sportType.value = text
                     }
+                } else if (text === "Outdoor activity" && locationViewModel.selected.value!!) {
+                    locationViewModel.sportType.value = text
                 }
             }
         }
     }
-
+}
 
 
 /*

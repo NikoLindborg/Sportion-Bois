@@ -22,11 +22,13 @@ import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.ArrayList
+import fi.sportionbois.sportion.R
 
 @Composable
 fun LiftResult(
@@ -61,8 +63,8 @@ fun LiftResult(
                 value = rpeValue,
                 onValueChange = { rpeValue = it },
                 textStyle = MaterialTheme.typography.subtitle1,
-                label = { Text("Set RPE")},
-                modifier= Modifier.padding(32.dp, 32.dp),
+                label = { Text("Set RPE") },
+                modifier = Modifier.padding(32.dp, 32.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             Button(onClick = { gymViewModel.updateRpe(rpeValue, currentId.toInt()) }) {
@@ -73,18 +75,26 @@ fun LiftResult(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             DetailComponent(firstValue = weight, secondValue = "Weight")
+            Spacer(modifier = Modifier.padding(10.dp))
             DetailComponent(firstValue = reps, secondValue = "Reps")
         }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            PlotChart(lineEntry, "Description for chart", "", "", "")
-            Spacer(modifier = Modifier.padding(16.dp))
+        if (lineEntry.count() > 0) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                PlotChart(
+                    lineEntry,
+                    stringResource(id = R.string.lift_title),
+                    stringResource(id = R.string.acceleration),
+                    stringResource(id = R.string.time),
+                    stringResource(id = R.string.lift_description)
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+            }
         }
     }
 }

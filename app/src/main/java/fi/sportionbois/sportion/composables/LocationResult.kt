@@ -62,7 +62,7 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
             }
         }
         Text(
-            "Bike details",
+            "Details",
             style = MaterialTheme.typography.body1,
             color = MaterialTheme.colors.onBackground
         )
@@ -105,13 +105,6 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
                         stringResource(id = R.string.m_s),
                         stringResource(id = R.string.m),
                         stringResource(id = R.string.route_description)
-                    )
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    PlotChart(
-                        lineEntryAltitude, stringResource(id = R.string.route_altitude),
-                        stringResource(id = R.string.m),
-                        stringResource(id = R.string.m),
-                        stringResource(id = R.string.altitude_description)
                     )
                 } else {
                     Text(

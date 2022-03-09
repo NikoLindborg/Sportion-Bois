@@ -14,7 +14,7 @@ class GymDataRepository(private val gymDataDao: GymDataDao) {
     fun getDataById(id: Int) =
         gymDataDao.getGymDataById(id)
 
-    fun getRpe(activityId: Int) = gymDataDao.getRpe(activityId)
+    fun getRpe(activityId: Int): LiveData<String> = gymDataDao.getRpe(activityId)
 
     fun getAllData(): LiveData<List<GymData>> = gymDataDao.getAllGymData()
 

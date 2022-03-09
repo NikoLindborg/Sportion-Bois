@@ -51,7 +51,7 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
         modifier = Modifier
             .padding(16.dp)
             .clickable { if(activity.sportType == "Squat" || activity.sportType == "Deadlift"){navController.navigate("LiftDetails" + "/${activity.sportType}"
-                    + "/${gymData?.reps}" + "/${gymData?.weight}" + "/${gymData?.weight}")} else if(activity.sportType == "Biking"){
+                    + "/${gymData?.reps}" + "/${gymData?.weight}" + "/${gymData?.activity}")} else if(activity.sportType == "Outdoor activity"){
                 navController.navigate("LocationActivityDetails" + "/${activity.activityId.toString()}")}  }
     ){
         Column(modifier = Modifier
@@ -93,7 +93,7 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                         RPEBar(gymData.rpe.toString())
                     }
                 }
-                if(activity.sportType == "Biking") {
+                if(activity.sportType == "Outdoor activity") {
                     if (databaseDataPoints != null) {
                         databaseDataPoints.forEach {
                             geoPoints.add(LonLat(it.lat, it.lon))
@@ -126,7 +126,7 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                             Text(gymData.reps.toString(), color = MaterialTheme.colors.onBackground)
                         }
                     }
-                    if(activity.sportType == "Biking") {
+                    if(activity.sportType == "Outdoor activity") {
                         if (databaseDataPoints != null) {
                             if(databaseDataPoints[databaseDataPoints.size - 1].totalDistance != null){
                                 Text(
@@ -167,9 +167,9 @@ fun HomeDataCard(activity: SportActivity, gymData: GymData?, navController: NavC
                     .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround){
-                    Text(if(activity.sportType == "Biking"){"distance"} else {"weight"} , color = MaterialTheme.colors.onBackground)
-                    Text(if(activity.sportType == "Biking"){"duration"} else {"reps"}, color = MaterialTheme.colors.onBackground)
-                    if(activity.sportType == "Biking"){
+                    Text(if(activity.sportType == "Outdoor activity"){"distance"} else {"weight"} , color = MaterialTheme.colors.onBackground)
+                    Text(if(activity.sportType == "Outdoor activity"){"duration"} else {"reps"}, color = MaterialTheme.colors.onBackground)
+                    if(activity.sportType == "Outdoor activity"){
                         Text("avg speed", color = MaterialTheme.colors.onBackground)
                     }
 

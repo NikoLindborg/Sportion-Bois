@@ -22,6 +22,9 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
     var weight: MutableLiveData<Long> = MutableLiveData(0)
     var sportType: MutableLiveData<String> = MutableLiveData("")
 
+    private var _selectedItemCount: MutableLiveData<Int> = MutableLiveData(0)
+    var selectedItemCount: LiveData<Int> = _selectedItemCount
+
     //  Livedata variable for storing the activityId of current activity. Used for binding
     //  LocationDataPoint entities to SportActivity entity
     private var _currentActivityId: MutableLiveData<Int> = MutableLiveData(0)
@@ -61,4 +64,11 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
     fun getGymDataById(id: Int): LiveData<GymData> =
         gymDataRepository.getDataById(id)
 
+    fun increaseItemCount(count: Int) {
+        _selectedItemCount.value = _selectedItemCount.value?.plus(count)
+    }
+
+    fun decreaseItemCount(count: Int) {
+        _selectedItemCount.value = _selectedItemCount.value?.minus(count)
+    }
 }

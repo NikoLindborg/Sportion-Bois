@@ -25,4 +25,18 @@
     <string name="lift_description">Acceleration values of the lift between 0.2s to help with evaluating the RPE.</string>
     <string name="tracking">Tracking</string>
     <string name="stop_tracking">STOP TRACKING</string>
+    <string name="duration_not_found">duration not found</string>
+    <string name="duration">duration</string>
+    <string name="rpe">rpe</string>
+    <string name="info">info</string>
+    <string name="ok">OK</string>
+    <string name="outdoor_activity">Outdoor activity</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="username">Username</string>
+    <string name="insert_user">Insert user</string>
+    <string name="sync_heart_rate">Sync heart rate</string>
+    <string name="avg_heart_rate">avg heart rate</string>
+    <string name="connect_to_google_account">Connect your google account, to be able to see heart rate of your outdoor activities.</string>
+    <string name="connect_to_googlefit">Connect to GoogleFit</string>
 </resources>

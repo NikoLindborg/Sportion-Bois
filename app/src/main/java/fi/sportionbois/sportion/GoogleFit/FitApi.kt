@@ -11,14 +11,20 @@ import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
+import fi.sportionbois.sportion.entities.SportActivity
+import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: Long, endTime: Long){
+/**
+ * Handles fetching data from googlefit, inserts average heart rate to database
+ * Done with developers.google guide. Copyright @ https://developers.google.com/fit/android/get-started
+ **/
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun getFitApiData(
+    context: Context, fitnessOptions: FitnessOptions, startTime: Long, endTime: Long,
+    currentActivity: SportActivity?, locationViewModel: LocationViewModel
+) {
     val readRequest =
         DataReadRequest.Builder()
             // The data request can specify multiple data types to return,
@@ -30,17 +36,26 @@ fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: 
             // bucketByTime allows for a time span, whereas bucketBySession allows
             // bucketing by <a href="/fit/android/using-sessions">sessions</a>.
             .bucketByTime(1, TimeUnit.DAYS)
-            .setTimeRange(startTime, endTime, TimeUnit.SECONDS)
+            .setTimeRange(
+                startTime,
+                endTime, TimeUnit.SECONDS
+            )
             .build()
 
     fun dumpDataSet(dataSet: DataSet) {
-        Log.i(ContentValues.TAG, "Data returned for Data type: ${dataSet.dataType.name}")
-        Log.i(ContentValues.TAG, "Data returned for Data type: ${dataSet.dataPoints}")
+        var avg: Float = 0.0F
         for (dp in dataSet.dataPoints) {
-            Log.i(ContentValues.TAG,"Data point:")
-            Log.i(ContentValues.TAG,"\tType: ${dp.dataType.name}")
             for (field in dp.dataType.fields) {
-                Log.i(ContentValues.TAG,"\tField: ${field.name} Value: ${dp.getValue(field)}")
+                if (field.name == "average") {
+                    avg = dp.getValue(field).asFloat()
+                }
+            }
+        }
+        if (currentActivity != null) {
+            if (currentActivity?.avgHeartRate == null) {
+                if (avg != 0.0F) {
+                    locationViewModel.insertAvgHeartRate(currentActivity?.activityId, avg)
+                }
             }
         }
     }
@@ -55,6 +70,6 @@ fun getFitApiData(context: Context, fitnessOptions : FitnessOptions, startTime: 
             }
         }
         .addOnFailureListener { e ->
-            Log.w(ContentValues.TAG,"There was an error reading data from Google Fit", e)
+            Log.w(ContentValues.TAG, "There was an error reading data from Google Fit", e)
         }
 }

@@ -6,17 +6,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
+import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.ui.theme.SportionTheme
+
+/**
+ *  A sport type button component used in start tracking view to start activity.
+ **/
 
 @Composable
 fun SportTypeButton(
@@ -75,7 +78,7 @@ fun SportTypeButton(
 fun SportTypeCardPreview() {
     SportionTheme {
         Surface(color = MaterialTheme.colors.background) {
-            SportTypeButton(text = "Outdoor activity")
+            SportTypeButton(stringResource(id = R.string.outdoor_activity))
         }
     }
 }

@@ -37,21 +37,21 @@ fun CreateUser(userViewModel: UserViewModel) {
         var lname by remember { mutableStateOf("") }
         Spacer(modifier = Modifier.padding(5.dp))
         TextField(value = username, label = {
-            Text("Username")
+            Text(stringResource(id = R.string.username))
         },
             onValueChange = { username = it })
         TextField(value = fname, label = {
-            Text("First name")
+            Text(stringResource(id = R.string.first_name))
         },
             onValueChange = { fname = it })
         TextField(value = lname, label = {
-            Text("Last name")
+            Text(stringResource(id = R.string.last_name))
         },
             onValueChange = { lname = it })
         Spacer(modifier = Modifier.padding(20.dp))
         //  If any of the fields is in default value, the button is enabled
         val filledFields = (fname != "" && lname != "" && username != "")
-        ButtonCHViolet(text = "Insert user", filledFields, onClick = {
+        ButtonCHViolet(text = stringResource(id = R.string.insert_user), filledFields, onClick = {
             userViewModel.insert(User(username, fname, lname))
         })
 

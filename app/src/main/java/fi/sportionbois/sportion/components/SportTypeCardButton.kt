@@ -12,19 +12,21 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
+/**
+ *  A sport type card button component used in start tracking view to start activity.
+ *  Activities which need inputs such as reps / weight are expandable
+ **/
 @ExperimentalMaterialApi
 @Composable
 fun SportTypeCardButton(
@@ -36,12 +38,10 @@ fun SportTypeCardButton(
     var expandedState by remember { mutableStateOf(false) }
     var repsInput by remember { mutableStateOf("") }
     var weightInput by remember { mutableStateOf("") }
-    var selectedCount = gymViewModel.selectedItemCount.observeAsState()
 
     Card(
         modifier = modifier
             .width(325.dp)
-            //need to correct colors on border
             .then(
                 if (expandedState) modifier.border(
                     BorderStroke(2.dp, MaterialTheme.colors.secondary),
@@ -56,11 +56,9 @@ fun SportTypeCardButton(
         onClick = {
             if (!expandedState) {
                 gymViewModel.increaseItemCount(1)
-                Log.d("SELECTEDCOUNT", selectedCount.value.toString())
                 expandedState = !expandedState
             } else {
                 gymViewModel.decreaseItemCount(1)
-                Log.d("SELECTEDCOUNT", selectedCount.value.toString())
                 expandedState = !expandedState
             }
         }
@@ -125,7 +123,7 @@ fun SportTypeCardButton(
                         TextField(
                             value = repsInput,
                             onValueChange = { repsInput = it },
-                            label = { Text("Reps") },
+                            label = { Text(stringResource(id = R.string.reps)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                     }
@@ -138,7 +136,7 @@ fun SportTypeCardButton(
                         TextField(
                             value = weightInput,
                             onValueChange = { weightInput = it },
-                            label = { Text("Weight") },
+                            label = { Text(stringResource(id = R.string.weight)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                     }
@@ -154,15 +152,3 @@ fun SportTypeCardButton(
         }
     }
 }
-
-
-/*
-@ExperimentalMaterialApi
-@Composable
-@Preview
-fun Preview(){
-    SportTypeCardButton(text = "Bowling", )
-}
-*/
-
-

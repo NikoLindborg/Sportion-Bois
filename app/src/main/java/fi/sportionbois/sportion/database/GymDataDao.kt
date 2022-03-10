@@ -5,6 +5,10 @@ import androidx.room.*
 import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.entities.LocationDataPoint
 
+/**
+ * DAO for GymData
+ **/
+
 @Dao
 interface GymDataDao {
     @Query("SELECT * FROM gymdata WHERE gymdata.activity = :activityId")

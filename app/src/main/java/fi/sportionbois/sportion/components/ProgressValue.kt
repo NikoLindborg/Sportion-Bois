@@ -19,6 +19,7 @@ import fi.sportionbois.sportion.ui.theme.SportionTheme
 /**
  * Component to provide a numeric and a string value to user
  **/
+
 @Composable
 fun ProgressValue(value: String) {
     Box(

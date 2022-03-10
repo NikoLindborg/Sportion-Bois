@@ -12,6 +12,10 @@ import fi.sportionbois.sportion.entities.SportActivity
 import fi.sportionbois.sportion.repositories.SportActivityRepository
 import kotlinx.coroutines.launch
 
+/**
+ * Viewmodel for location & sportactivity data
+ **/
+
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
     private var _travelledDistance: MutableLiveData<Float> = MutableLiveData(0f)
     var travelledDistance: LiveData<Float> = _travelledDistance
@@ -75,18 +79,33 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         _currentActivityId.value = activityId
     }
 
-    //Insert endtime into activity
+    //  Insert endtime into activity
     fun insertEndTime(activityId: Int, endTime: Long) {
         viewModelScope.launch {
             activityDB.sportActivityDao().insertEndTime(activityId, endTime)
         }
     }
 
-    //get latest activity id
+    //  Get latest activity id
     fun getLatestActivityId(): LiveData<Int> =
         activityDB.sportActivityDao().getLatestActivityId()
 
-    //test get all data
+    //  Get all sport activity data
     fun getAllData(): LiveData<List<SportActivity>> =
         allData
+
+    //  Get activity by id
+    fun getActivityById(activityId: Int): LiveData<SportActivity> =
+        sportAcivityRepository.getActivityById(activityId)
+
+    //  Insert heart rate to database
+    fun insertAvgHeartRate(activityId: Int, avgHeartRate: Float) {
+        viewModelScope.launch {
+            activityDB.sportActivityDao().insertAvgHeartRate(activityId, avgHeartRate)
+        }
+    }
+
+    //  Get average heart rate by activity id
+    fun getAvgHeartRateById(activityId: Int): LiveData<Float> =
+        activityDB.sportActivityDao().getAvgHeartRateById(activityId)
 }

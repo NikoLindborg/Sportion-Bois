@@ -4,6 +4,10 @@ import androidx.lifecycle.LiveData
 import fi.sportionbois.sportion.database.GymDataDao
 import fi.sportionbois.sportion.entities.GymData
 
+/**
+ * Repository for gymdata entity, handling basic database actions
+ **/
+
 class GymDataRepository(private val gymDataDao: GymDataDao) {
 
     suspend fun insertGymData(gymData: GymData) =

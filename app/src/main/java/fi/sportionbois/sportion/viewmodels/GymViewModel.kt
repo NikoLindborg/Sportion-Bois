@@ -25,11 +25,6 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
     private var _selectedItemCount: MutableLiveData<Int> = MutableLiveData(0)
     var selectedItemCount: LiveData<Int> = _selectedItemCount
 
-    //  Livedata variable for storing the activityId of current activity. Used for binding
-    //  LocationDataPoint entities to SportActivity entity
-    private var _currentActivityId: MutableLiveData<Int> = MutableLiveData(0)
-    var currentActivityId: LiveData<Int> = _currentActivityId
-
     private val gymDataRepository: GymDataRepository
     private var allGymData: LiveData<List<GymData>>
 
@@ -46,10 +41,11 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    //  Gets the inserted activity's RPE-value
     fun getRpe(activityId: Int): LiveData<String> =
         gymDataRepository.getRpe(activityId)
 
-
+    //  Updates the inserted activity's RPE-value
     fun updateRpe(rpe: String, activityId: Int) {
         viewModelScope.launch (Dispatchers.IO){
             gymDataRepository.updateRpe(rpe, activityId)
@@ -64,11 +60,18 @@ class GymViewModel(application: Application) : AndroidViewModel(application) {
     fun getGymDataById(id: Int): LiveData<GymData> =
         gymDataRepository.getDataById(id)
 
+    //  Increase selectedItemCount by the inserted value
+    //  Used to control the button disabled/enabled in the start tracking view
     fun increaseItemCount(count: Int) {
         _selectedItemCount.value = _selectedItemCount.value?.plus(count)
     }
-
+    //  Decrease selectedItemCount by the inserted value
     fun decreaseItemCount(count: Int) {
         _selectedItemCount.value = _selectedItemCount.value?.minus(count)
+    }
+
+    //  Reset the selectedItemCount to 0
+    fun resetItemCount() {
+        _selectedItemCount.value = 0
     }
 }

@@ -1,8 +1,13 @@
 package fi.sportionbois.sportion.entities
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
-import java.time.LocalDate
+import androidx.room.PrimaryKey
+
+/**
+ * Entity for SportActivity
+ **/
 
 @Entity(
     foreignKeys = [ForeignKey(

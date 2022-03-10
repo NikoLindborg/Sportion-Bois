@@ -1,7 +1,5 @@
 package fi.sportionbois.sportion.composables
 
-import android.app.Application
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -10,25 +8,33 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.CenteredColumnMaxWidthAndHeight
+import fi.sportionbois.sportion.R
+import fi.sportionbois.sportion.components.ButtonCHViolet
 import fi.sportionbois.sportion.entities.User
 import fi.sportionbois.sportion.viewmodels.UserViewModel
-import fi.sportionbois.sportion.R
 
+/**
+ * Composable for creating a user once the application launches.
+ **/
 
 @Composable
 fun CreateUser(userViewModel: UserViewModel) {
     CenteredColumnMaxWidthAndHeight {
-        Text(text = stringResource(id = R.string.greeting), style = MaterialTheme.typography.h1)
+        Text(
+            text = stringResource(id = R.string.greeting),
+            style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.onBackground
+        )
         Spacer(modifier = Modifier.padding(15.dp))
-        Text(text = stringResource(id = R.string.createuser))
+        Text(
+            text = stringResource(id = R.string.createuser),
+            color = MaterialTheme.colors.onBackground
+        )
         var username by remember { mutableStateOf("") }
         var fname by remember { mutableStateOf("") }
         var lname by remember { mutableStateOf("") }
-        var isEnabled by remember { mutableStateOf(false) }
         Spacer(modifier = Modifier.padding(5.dp))
         TextField(value = username, label = {
             Text("Username")
@@ -42,11 +48,10 @@ fun CreateUser(userViewModel: UserViewModel) {
             Text("Last name")
         },
             onValueChange = { lname = it })
-        if (username != "" && fname != "" && lname != "") {
-            isEnabled = true
-        }
         Spacer(modifier = Modifier.padding(20.dp))
-        ButtonCHViolet(text = "Insert user", isEnabled, onClick = {
+        //  If any of the fields is in default value, the button is enabled
+        val filledFields = (fname != "" && lname != "" && username != "")
+        ButtonCHViolet(text = "Insert user", filledFields, onClick = {
             userViewModel.insert(User(username, fname, lname))
         })
 

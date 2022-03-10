@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import fi.sportionbois.sportion.Message
 import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.composables.LonLat
 import fi.sportionbois.sportion.composables.ShowMap

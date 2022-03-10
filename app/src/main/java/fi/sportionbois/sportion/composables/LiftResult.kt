@@ -1,6 +1,5 @@
 package fi.sportionbois.sportion.composables
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,34 +12,35 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.mikephil.charting.data.Entry
+import fi.sportionbois.sportion.R
+import fi.sportionbois.sportion.components.ButtonCHViolet
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.components.RPEBar
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
-
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import fi.sportionbois.sportion.entities.GymData
 import fi.sportionbois.sportion.viewmodels.GymViewModel
-import fi.sportionbois.sportion.viewmodels.LocationViewModel
-import java.util.ArrayList
-import fi.sportionbois.sportion.R
+import java.util.*
+
+/**
+ * Composable for a lift result.
+ *
+ * Provides a RPE-inserting field, data from the lift in a Graph and other lift values in detail
+ * components for the user
+ **/
 
 @Composable
 fun LiftResult(
     sportType: String,
     weight: String,
     reps: String,
-    locationViewModel: LocationViewModel,
     accelerometerViewModel: AccelerometerViewModel,
     currentId: String,
     gymViewModel: GymViewModel
 ) {
-    Log.d("CURID", currentId)
     val lineEntry = ArrayList<Entry>()
     accelerometerViewModel.acceleration.forEachIndexed { index, element ->
         lineEntry.add(Entry(index.toFloat(), element))
@@ -63,22 +63,26 @@ fun LiftResult(
                 value = rpeValue,
                 onValueChange = { rpeValue = it },
                 textStyle = MaterialTheme.typography.subtitle1,
-                label = { Text("Set RPE") },
-                modifier = Modifier.padding(32.dp, 32.dp),
+                label = { Text(stringResource(id = R.string.set_rpe)) },
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 10.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
-            Button(onClick = { gymViewModel.updateRpe(rpeValue, currentId.toInt()) }) {
-                Text(text = "Save")
-            }
+            ButtonCHViolet(text = stringResource(id = R.string.save), isEnabled =(rpeValue != ""), onClick = {
+                gymViewModel.updateRpe(rpeValue, currentId.toInt())
+            })
         }
-        Text("Lift details - $sportType", style = MaterialTheme.typography.body1)
+        Text(
+            "Lift details - $sportType",
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            DetailComponent(firstValue = weight, secondValue = "Weight")
+            DetailComponent(firstValue = weight, secondValue = stringResource(id = R.string.weight))
             Spacer(modifier = Modifier.padding(10.dp))
-            DetailComponent(firstValue = reps, secondValue = "Reps")
+            DetailComponent(firstValue = reps, secondValue = stringResource(id = R.string.reps))
         }
         if (lineEntry.count() > 0) {
             Column(

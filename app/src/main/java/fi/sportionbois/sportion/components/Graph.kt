@@ -20,8 +20,14 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import java.util.ArrayList
 import fi.sportionbois.sportion.R
+import java.util.*
+
+/**
+ *  A graph component used in result views to display different sensor/location data.
+ *
+ *  Graph is created with MPAndroidChart. Copyright @ https://github.com/PhilJay/MPAndroidChart
+ **/
 
 @Composable
 fun PlotChart(

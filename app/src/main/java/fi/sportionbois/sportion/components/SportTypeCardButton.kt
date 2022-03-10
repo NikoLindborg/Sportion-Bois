@@ -4,23 +4,24 @@ import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
@@ -36,13 +37,6 @@ fun SportTypeCardButton(
     var repsInput by remember { mutableStateOf("") }
     var weightInput by remember { mutableStateOf("") }
     var selectedCount = gymViewModel.selectedItemCount.observeAsState()
-    /*if (expandedState) {
-        selectedCount.value += 1
-        Log.d("SELECTEDCOUNT", selectedCount.value.toString())
-    } else {
-        selectedCount.value -= 1
-        Log.d("SELECTEDCOUNT", selectedCount.value.toString())
-    }*/
 
     Card(
         modifier = modifier
@@ -99,11 +93,25 @@ fun SportTypeCardButton(
                     color = MaterialTheme.colors.onBackground
                 )
                 //  Placeholder for sport icons
-                Icon(
-                    Icons.Filled.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colors.onBackground
-                )
+                if (text == "Outdoor activity") {
+                    Icon(
+                        Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                } else {
+                    if (isSystemInDarkTheme()) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_db_lightgray),
+                            contentDescription = ""
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_db_spacecrayola),
+                            contentDescription = ""
+                        )
+                    }
+                }
             }
             if (expandedState) {
                 locationViewModel.selected.value = true

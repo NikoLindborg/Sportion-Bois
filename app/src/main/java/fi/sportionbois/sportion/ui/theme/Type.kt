@@ -1,6 +1,5 @@
 package fi.sportionbois.sportion.ui.theme
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -9,6 +8,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fi.sportionbois.sportion.R
+
+/**
+ * Google Rubik font added to the Application
+ */
 
 val fonts = FontFamily(
     Font(R.font.rubik_black),

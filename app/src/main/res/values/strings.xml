@@ -1,16 +1,28 @@
 <resources>
     <string name="app_name">Sportion</string>
+    <string name="app_name_lowercase">sportion</string>
     <string name="greeting">Welcome to Sportion</string>
     <string name="createuser">Create a user</string>
     <string name="distance">Distance</string>
+    <string name="details">Details</string>
     <string name="m_s">m/s</string>
     <string name="m">m</string>
     <string name="acceleration">Acceleration</string>
     <string name="lift_title">Lift acceleration details</string>
     <string name="time">Time</string>
+    <string name="avg">avg speed</string>
+    <string name="reps">reps</string>
+    <string name="weight">weight</string>
+    <string name="set_rpe">Set RPE</string>
+    <string name="save">Save</string>
+    <string name="start">START!</string>
+    <string name="no_graph">No graph data available</string>
+    <string name="no_map">No map data available</string>
     <string name="route_speed">Route speed</string>
     <string name="route_altitude">Route altitude</string>
     <string name="route_description">Speed over travelled distance</string>
     <string name="altitude_description">The altitude of the tracked route</string>
     <string name="lift_description">Acceleration values of the lift between 0.2s to help with evaluating the RPE.</string>
+    <string name="tracking">Tracking</string>
+    <string name="stop_tracking">STOP TRACKING</string>
 </resources>

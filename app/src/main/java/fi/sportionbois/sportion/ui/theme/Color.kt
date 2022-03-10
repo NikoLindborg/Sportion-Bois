@@ -2,6 +2,10 @@ package fi.sportionbois.sportion.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Custom color values used in the theme
+ */
+
 val LightGray = Color(0xFFCCDBDC)
 val MiddleBlue = Color(0x4D80CED7)
 val MediumTurquoise = Color(0xFF63C7B2)

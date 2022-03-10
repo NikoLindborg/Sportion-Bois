@@ -1,8 +1,12 @@
 package fi.sportionbois.sportion.composables
 
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.mikephil.charting.data.Entry
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.fitness.FitnessOptions
+import fi.sportionbois.sportion.GoogleFit.getFitApiData
 import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
@@ -25,14 +32,24 @@ import java.util.*
  * Provides a map, data from the route in a Graph and other values in detail components for the user
  **/
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
+fun LocationResult(
+    locationViewModel: LocationViewModel,
+    activityId: String,
+    context: Context,
+    fitnessOptions: FitnessOptions
+) {
     val lineEntrySpeed = ArrayList<Entry>()
     val geoPoints = mutableListOf<LonLat>()
 
     val databaseDataPoints by locationViewModel.getDataPointsForId(activityId.toInt())
         .observeAsState()
     val avgSpeed by locationViewModel.getLocationAvgSpeed(activityId.toInt()).observeAsState()
+
+    val currentActivity by locationViewModel.getActivityById(activityId.toInt()).observeAsState()
+
+    val avgHeartRate by locationViewModel.getAvgHeartRateById(activityId.toInt()).observeAsState()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -60,31 +77,60 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
                 )
             }
         }
-        Text(
-            stringResource(id = R.string.details),
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onBackground
-        )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (databaseDataPoints != null) {
-                if (databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance != null) {
-                    DetailComponent(
-                        firstValue = ("%.2f".format(
-                            databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance?.times(
-                                0.001
-                            )
-                        )) + "km", secondValue = stringResource(id = R.string.distance)
-                    )
+            Text(
+                stringResource(id = R.string.details),
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onBackground
+            )
+            if (GoogleSignIn.getLastSignedInAccount(context) != null) {
+                Button(onClick = {
+                    if (currentActivity != null) {
+                        getFitApiData(
+                            context,
+                            fitnessOptions,
+                            currentActivity?.startTime ?: 0,
+                            currentActivity?.endTime ?: 0,
+                            currentActivity ?: null,
+                            locationViewModel
+                        )
+                    }
+                }) {
+                    Text(stringResource(id = R.string.sync_heart_rate))
                 }
             }
-            Spacer(modifier = Modifier.padding(10.dp))
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            if (databaseDataPoints != null) {
+                DetailComponent(
+                    firstValue = ("%.2f".format(
+                        databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance?.times(
+                            0.001
+                        )
+                    )) + "km", secondValue = stringResource(id = R.string.distance)
+                )
+            }
+
             DetailComponent(
                 firstValue = "${String.format("%.2f", avgSpeed)} ",
                 secondValue = stringResource(id = R.string.avg)
             )
+
+            if (avgHeartRate != null && avgHeartRate != 0.0F) {
+                DetailComponent(
+                    firstValue = "${String.format("%.2f", avgHeartRate)} ",
+                    secondValue = stringResource(id = R.string.avg_heart_rate)
+                )
+            }
         }
         Column(
             modifier = Modifier.fillMaxWidth(),

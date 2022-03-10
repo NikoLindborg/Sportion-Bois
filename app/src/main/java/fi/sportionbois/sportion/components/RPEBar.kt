@@ -1,10 +1,8 @@
 package fi.sportionbois.sportion.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,11 +10,18 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.ui.theme.SportionTheme
+
+/**
+ *  A rpe bar component used in result views and home data card to display rpe value.
+ *
+ *  Info alert is created with jetpack compose guide. Copyright @ //https://coflutter.com/jetpack-compose-how-to-show-dialog/
+ **/
 
 @Composable
 fun RPEBar(rpeValue: String) {
@@ -40,7 +45,7 @@ fun RPEBar(rpeValue: String) {
 
             Text(rpeValue, style = MaterialTheme.typography.h1)
             Spacer(modifier = Modifier.height(4.dp))
-            Text("RPE", style = MaterialTheme.typography.subtitle1)
+            Text(stringResource(id = R.string.rpe), style = MaterialTheme.typography.subtitle1)
             Spacer(modifier = Modifier.height(14.dp))
             Icon(Icons.Filled.Info, contentDescription = "Info Icon")
 
@@ -58,7 +63,7 @@ fun ShowRPEInfo(expanded: Boolean, setExpanded: (Boolean) -> Unit) {
             onDismissRequest = {
             },
             title = {
-                Text("Info")
+                Text(stringResource(id = R.string.info))
             },
             confirmButton = {
                 Button(
@@ -67,7 +72,7 @@ fun ShowRPEInfo(expanded: Boolean, setExpanded: (Boolean) -> Unit) {
                         setExpanded(false)
                     },
                 ) {
-                    Text("OK")
+                    Text(stringResource(id = R.string.ok))
                 }
             },
             text = {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -45,8 +44,10 @@ fun LiftResult(
     accelerometerViewModel.acceleration.forEachIndexed { index, element ->
         lineEntry.add(Entry(index.toFloat(), element))
     }
+
     var rpeValue by remember { mutableStateOf("") }
     var databaseRpeValue = gymViewModel.getRpe(currentId.toInt()).observeAsState()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = Modifier
@@ -72,13 +73,14 @@ fun LiftResult(
             })
         }
         Text(
-            "Lift details - $sportType",
+            "${stringResource(id = R.string.details)} $sportType",
             style = MaterialTheme.typography.body1,
             color = MaterialTheme.colors.onBackground
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             DetailComponent(firstValue = weight, secondValue = stringResource(id = R.string.weight))
             Spacer(modifier = Modifier.padding(10.dp))

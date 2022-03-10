@@ -9,6 +9,10 @@ import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.entities.SportActivity
 import fi.sportionbois.sportion.entities.User
 
+/**
+ * Room database
+ **/
+
 @Database(entities = [(SportActivity::class), (User::class), (LocationDataPoint::class), (GymData::class)], version = 1)
 abstract class ActivityDB : RoomDatabase() {
     abstract fun sportActivityDao(): SportActivityDao

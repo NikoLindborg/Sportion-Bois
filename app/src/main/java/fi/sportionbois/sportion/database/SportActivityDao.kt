@@ -37,4 +37,12 @@ interface SportActivityDao {
     @Query("UPDATE sportactivity SET endTime=:newEndTime where activityId = :activityID")
     suspend fun insertEndTime(activityID: Int, newEndTime: Long)
 
+    @Query("SELECT * FROM sportactivity WHERE sportactivity.activityId = :activityID")
+    fun getActivityById(activityID: Int): LiveData<SportActivity>
+
+    @Query("UPDATE sportactivity SET avgHeartRate=:newAvgHeartRate where activityId = :activityID")
+    suspend fun insertAvgHeartRate(activityID: Int, newAvgHeartRate: Float)
+
+    @Query("SELECT avgHeartRate FROM sportactivity WHERE sportactivity.activityId = :activityID")
+    fun getAvgHeartRateById(activityID: Int): LiveData<Float>
 }

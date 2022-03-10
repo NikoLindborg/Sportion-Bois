@@ -51,8 +51,9 @@ fun NavigationGraph(
         }
         composable("LocationActivityDetails" + "/{activityId}") { navBackStack ->
             val activityId = navBackStack.arguments?.getString("activityId")
-            LocationResult(locationViewModel, activityId ?: "")
+            LocationResult(locationViewModel, activityId ?: "", context, fitnessOptions)
         }
+
         composable("LiftDetails" + "/{sportType}" + "/{reps}" + "/{weight}" + "/{currentId}") { navBackStack ->
             val sportType = navBackStack.arguments?.getString("sportType")
             val reps = navBackStack.arguments?.getString("reps")

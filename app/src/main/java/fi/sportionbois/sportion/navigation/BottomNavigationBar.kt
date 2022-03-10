@@ -1,9 +1,6 @@
 package fi.sportionbois.sportion.navigation
 
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.sp
@@ -23,7 +20,7 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem.StartTracking,
         BottomNavItem.Settings,
     )
-    androidx.compose.material.BottomNavigation(
+    BottomNavigation(
         backgroundColor = MaterialTheme.colors.background
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()

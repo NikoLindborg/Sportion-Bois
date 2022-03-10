@@ -1,18 +1,13 @@
 package fi.sportionbois.sportion.viewmodels
 
 import android.app.Application
-import android.location.Location
-import androidx.compose.runtime.State
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.GymData
-import fi.sportionbois.sportion.entities.LocationDataPoint
-import fi.sportionbois.sportion.entities.SportActivity
 import fi.sportionbois.sportion.repositories.GymDataRepository
-import fi.sportionbois.sportion.repositories.SportActivityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

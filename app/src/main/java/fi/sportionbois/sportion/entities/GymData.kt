@@ -4,6 +4,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/**
+ * Entity for GymData
+ **/
+
+
 @Entity(
     foreignKeys = [ForeignKey(
         entity = SportActivity::class,

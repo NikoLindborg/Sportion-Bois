@@ -13,6 +13,10 @@ import fi.sportionbois.sportion.components.HomeDataCard
 import fi.sportionbois.sportion.viewmodels.GymViewModel
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
 
+/**
+ * Composable for home view, showing user activities with homedatacards.
+ **/
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(navController: NavController, locationViewModel: LocationViewModel, gymViewModel: GymViewModel) {
@@ -32,7 +36,6 @@ fun Home(navController: NavController, locationViewModel: LocationViewModel, gym
                     if(activity.sportType == "Outdoor activity") {
                         val databaseDataPoints by locationViewModel.getDataPointsForId(activity.activityId).observeAsState()
                         val avgSpeed by locationViewModel.getLocationAvgSpeed(activity.activityId).observeAsState()
-                        Log.d("home", avgSpeed.toString())
                         if(databaseDataPoints != null) {
                             HomeDataCard(activity, null, navController = navController, databaseDataPoints, avgSpeed
                             )

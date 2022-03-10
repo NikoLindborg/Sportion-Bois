@@ -8,6 +8,10 @@ import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.User
 import kotlinx.coroutines.launch
 
+/**
+ * Viewmodel for user data
+ **/
+
 class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val activityDB = ActivityDB.get(application)
 

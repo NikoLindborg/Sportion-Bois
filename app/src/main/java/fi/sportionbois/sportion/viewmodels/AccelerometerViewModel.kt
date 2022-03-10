@@ -9,9 +9,11 @@ import android.hardware.SensorManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import java.lang.Math.sqrt
 
+/**
+ * Viewmodel for accelometer data
+ **/
 
 class AccelerometerViewModel(application: Application) : AndroidViewModel(application) {
     private val accelerometerLiveData = AccelerometerLiveData()

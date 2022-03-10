@@ -22,6 +22,7 @@ data class SportActivity(
     val sportType: String,
     val startTime: Long?,
     val endTime: Long?,
+    val avgHeartRate: Float?,
     @PrimaryKey(autoGenerate = true)
     val activityId: Int,
 ) {

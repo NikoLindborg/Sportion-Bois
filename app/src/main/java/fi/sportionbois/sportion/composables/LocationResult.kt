@@ -1,9 +1,5 @@
 package fi.sportionbois.sportion.composables
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,18 +17,17 @@ import fi.sportionbois.sportion.R
 import fi.sportionbois.sportion.components.DetailComponent
 import fi.sportionbois.sportion.components.PlotChart
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.util.ArrayList
+import java.util.*
 
-
-data class LonLat(val lat: Float, val lon: Float)
+/**
+ * Composable for a location result.
+ *
+ * Provides a map, data from the route in a Graph and other values in detail components for the user
+ **/
 
 @Composable
 fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
     val lineEntrySpeed = ArrayList<Entry>()
-    val lineEntryAltitude = ArrayList<Entry>()
     val geoPoints = mutableListOf<LonLat>()
 
     val databaseDataPoints by locationViewModel.getDataPointsForId(activityId.toInt())
@@ -53,16 +48,20 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (databaseDataPoints != null) {
+                //  Receive the routes lat and lon values that are inserted as GeoPoints to Map
                 databaseDataPoints?.forEach {
                     geoPoints.add(LonLat(it.lat, it.lon))
                 }
                 ShowMap(geoList = geoPoints)
             } else {
-                Text(text = "No map data available", color = MaterialTheme.colors.onBackground)
+                Text(
+                    text = stringResource(id = R.string.no_map),
+                    color = MaterialTheme.colors.onBackground
+                )
             }
         }
         Text(
-            "Details",
+            stringResource(id = R.string.details),
             style = MaterialTheme.typography.body1,
             color = MaterialTheme.colors.onBackground
         )
@@ -77,14 +76,14 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
                             databaseDataPoints!![databaseDataPoints!!.size - 1].totalDistance?.times(
                                 0.001
                             )
-                        )), secondValue = "distance"
+                        )) + "km", secondValue = stringResource(id = R.string.distance)
                     )
                 }
             }
             Spacer(modifier = Modifier.padding(10.dp))
             DetailComponent(
                 firstValue = "${String.format("%.2f", avgSpeed)} ",
-                secondValue = "avg speed"
+                secondValue = stringResource(id = R.string.avg)
             )
         }
         Column(
@@ -93,10 +92,10 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
             verticalArrangement = Arrangement.Center
         ) {
             if (databaseDataPoints != null) {
+                /*  Insert the speed values from database to Graph with an Indexed value to have
+                    both y and x-axis values */
                 databaseDataPoints?.forEachIndexed { index, element ->
                     lineEntrySpeed.add(Entry(index.toFloat(), element.speed))
-                    //  Using total distance for now, change to altitude once Room is updated
-                    lineEntryAltitude.add(Entry(index.toFloat(), element.totalDistance))
                 }
                 if (lineEntrySpeed.count() > 0) {
                     PlotChart(
@@ -108,7 +107,7 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
                     )
                 } else {
                     Text(
-                        text = "No graph data available",
+                        text = stringResource(id = R.string.no_graph),
                         color = MaterialTheme.colors.onBackground
                     )
                 }
@@ -118,3 +117,5 @@ fun LocationResult(locationViewModel: LocationViewModel, activityId: String) {
         Spacer(modifier = Modifier.padding(20.dp))
     }
 }
+
+data class LonLat(val lat: Float, val lon: Float)

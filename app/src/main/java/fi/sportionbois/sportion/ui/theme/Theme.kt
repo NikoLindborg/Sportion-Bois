@@ -36,6 +36,7 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun SportionTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+    //  Checks the system theme and sets the right color pallettes
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

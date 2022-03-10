@@ -1,45 +1,37 @@
 package fi.sportionbois.sportion
 
 import android.app.Activity
-import androidx.core.content.ContextCompat
-import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.R
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import androidx.preference.PreferenceManager
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
-import fi.sportionbois.sportion.GoogleFit.getFitApiData
-import androidx.preference.PreferenceManager
 import fi.sportionbois.sportion.composables.SplashScreen
-import fi.sportionbois.sportion.entities.User
 import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.navigation.BottomNavigationBar
 import fi.sportionbois.sportion.navigation.NavigationGraph
 import fi.sportionbois.sportion.ui.theme.SportionTheme
-import java.time.LocalDate
-import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 import fi.sportionbois.sportion.viewmodels.GymViewModel
+import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import fi.sportionbois.sportion.viewmodels.UserViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
-import org.osmdroid.views.MapView
+
+/**
+ * MainActivity for setting the Application.
+ */
 
 class MainActivity : ComponentActivity() {
 
@@ -64,6 +56,7 @@ class MainActivity : ComponentActivity() {
         userViewModel = UserViewModel(application)
         accelerometerViewModel = AccelerometerViewModel(application)
 
+        //  Ask for permissions that the appliation needs to be able to track activities
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
@@ -75,7 +68,6 @@ class MainActivity : ComponentActivity() {
         )
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
         var locationHandler = LocationHandler(applicationContext, locationViewModel)
-        locationHandler.initializeLocation()
         setContent {
             val user = userViewModel.getAll().observeAsState()
             var userCount = user.value?.count() ?: 0
@@ -83,7 +75,6 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     if (userCount == 0) {
                         SplashScreen(userViewModel)
-                        //CreateUser(userViewModel)
                     } else {
                         MainScreen(
                             locationHandler,

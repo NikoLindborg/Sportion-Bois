@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.ui.theme.SportionTheme
 
 @Composable

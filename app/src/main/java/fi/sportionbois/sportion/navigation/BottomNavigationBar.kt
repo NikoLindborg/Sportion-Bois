@@ -10,6 +10,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
+/**
+ * Bottom navigation bar for the Applications navigation
+ *
+ * Used https://medium.com/geekculture/bottom-navigation-in-jetpack-compose-android-9cd232a8b16 as a tutorial
+ **/
+
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(

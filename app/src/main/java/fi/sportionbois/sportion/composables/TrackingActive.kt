@@ -1,42 +1,33 @@
 package fi.sportionbois.sportion.composables
-import android.content.Context
+
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
-import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import fi.sportionbois.sportion.ButtonCHViolet
 import fi.sportionbois.sportion.CenteredColumnMaxWidthAndHeight
-import fi.sportionbois.sportion.components.RPEBar
-import fi.sportionbois.sportion.location.LocationHandler
-import fi.sportionbois.sportion.viewmodels.LocationViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.google.android.gms.fitness.FitnessOptions
+import fi.sportionbois.sportion.R
+import fi.sportionbois.sportion.components.ButtonCHViolet
 import fi.sportionbois.sportion.components.ProgressValue
-import fi.sportionbois.sportion.database.ActivityDB
 import fi.sportionbois.sportion.entities.GymData
+import fi.sportionbois.sportion.location.LocationHandler
 import fi.sportionbois.sportion.viewmodels.AccelerometerViewModel
 import fi.sportionbois.sportion.viewmodels.GymViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import fi.sportionbois.sportion.viewmodels.LocationViewModel
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.chrono.HijrahChronology.INSTANCE
+
+/**
+ * Tracking active view that is used for both location and gym-related tracking.
+ **/
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -45,32 +36,31 @@ fun TrackingActive(
     locationHandler: LocationHandler,
     locationViewModel: LocationViewModel,
     accelerometerViewModel: AccelerometerViewModel,
-    context: Context,
-    fitnessOptions: FitnessOptions,
     gymViewModel: GymViewModel
-    ) {
+) {
     val value by locationViewModel.travelledDistance.observeAsState()
     val activityId = locationViewModel.getLatestActivityId().observeAsState()
-    Log.d("trueai", activityId.value.toString())
     locationViewModel.updateCurrentActivityId(activityId.value ?: 0)
     accelerometerViewModel.listen()
-    var currentId = locationViewModel.currentActivityId.observeAsState()
+    val currentId = locationViewModel.currentActivityId.observeAsState()
     val sportType = locationViewModel.sportType.observeAsState()
     val reps = gymViewModel.reps.observeAsState()
     val weight = gymViewModel.weight.observeAsState()
 
     CenteredColumnMaxWidthAndHeight {
+        //  If the currently tracked sport is location-based, the current travelled distance
+        //  is shown as a ProgressValue component, else a text "Tracking" is shown.
         if (locationViewModel.sportType.value === "Outdoor activity") {
             ProgressValue(value = "%.1f".format(value) + " m")
         } else {
-            Text("Tracking", style = MaterialTheme.typography.h1)
+            Text(stringResource(id = R.string.tracking), style = MaterialTheme.typography.h1)
         }
         Spacer(modifier = Modifier.padding(20.dp))
         ButtonCHViolet(
-            text = "STOP TRACKING",
+            text = stringResource(id = R.string.stop_tracking),
             true,
             onClick = {
-                if(locationViewModel.sportType.value === "Outdoor activity"){
+                if (locationViewModel.sportType.value === "Outdoor activity") {
                     locationHandler.stopLocationTracking()
                     navController.navigate("LocationActivityDetails" + "/${currentId.value.toString()}") {
                         popUpTo("TrackingActive") {
@@ -78,20 +68,21 @@ fun TrackingActive(
                         }
                     }
                 } else {
-                    navController.navigate("LiftDetails" + "/${sportType.value.toString()}"
-                            + "/${reps.value.toString()}" + "/${weight.value.toString()}" + "/${currentId.value.toString()}" ) {
+                    navController.navigate(
+                        "LiftDetails" + "/${sportType.value.toString()}"
+                                + "/${reps.value.toString()}" + "/${weight.value.toString()}" + "/${currentId.value.toString()}"
+                    ) {
                         popUpTo("TrackingActive") {
                             inclusive = true
                         }
                     }
                 }
 
-                if(currentId.value != null){
-                    Log.d("truein", currentId.value.toString())
-                        gymViewModel.insertGymData(
-                            GymData(currentId.value ?: 0,weight.value,reps.value,"")
-                        )
-                        gymViewModel.selected.value = false
+                if (currentId.value != null) {
+                    gymViewModel.insertGymData(
+                        GymData(currentId.value ?: 0, weight.value, reps.value, "")
+                    )
+                    gymViewModel.selected.value = false
                 }
                 accelerometerViewModel.stopListening()
                 //Insert end time to activity

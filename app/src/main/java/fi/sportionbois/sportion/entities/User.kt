@@ -3,6 +3,10 @@ package fi.sportionbois.sportion.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Entity for User
+ **/
+
 @Entity
 data class User(
     @PrimaryKey

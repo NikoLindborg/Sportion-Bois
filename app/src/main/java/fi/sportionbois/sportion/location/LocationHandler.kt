@@ -5,12 +5,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Looper
-import android.util.Log
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import fi.sportionbois.sportion.entities.LocationDataPoint
 import fi.sportionbois.sportion.viewmodels.LocationViewModel
+
+/**
+ * LocationHandler for tracking the users location with Google Play API
+ **/
 
 class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -21,6 +23,8 @@ class LocationHandler(context: Context, locationViewModel: LocationViewModel) {
     private var context = context
     private var locationViewModel = locationViewModel
 
+    //  Initializes the first location of the user and has the LocationCallback to persist
+    //  LocationDataPoints to Room database
     fun initializeLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         if (ActivityCompat.checkSelfPermission(

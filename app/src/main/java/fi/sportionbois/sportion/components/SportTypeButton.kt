@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
@@ -60,7 +61,7 @@ fun SportTypeButton(
                 )
                 //  Placeholder for sport icons
                 Icon(
-                    Icons.Filled.Person,
+                    Icons.Filled.LocationOn,
                     contentDescription = null,
                     tint = MaterialTheme.colors.onBackground
                 )

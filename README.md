@@ -25,3 +25,11 @@ https://github.com/NikoLindborg/Sportion-Bois.git
 ```
 
 3. Run the application either with Emulator or your Android Device
+
+
+4. Google Fit
+```
+This application is on development mode at Google developers so only accounts with access work
+Email : sportiontesti@gmail.com
+Password : Sportion2022
+```
